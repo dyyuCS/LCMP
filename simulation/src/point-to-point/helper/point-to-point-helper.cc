@@ -228,14 +228,18 @@ PointToPointHelper::Install (Ptr<Node> a, Ptr<Node> b)
 
   Ptr<PointToPointNetDevice> devA = m_deviceFactory.Create<PointToPointNetDevice> ();
   devA->SetAddress (Mac48Address::Allocate ());
-  a->AddDevice (devA);
+  a->AddDevice (devA); // 1 给source node安装网卡设备QbbNetDevice
+
   Ptr<Queue> queueA = m_queueFactory.Create<Queue> ();
-  devA->SetQueue (queueA);
+  devA->SetQueue (queueA); // 3 给source node的网卡设备安装出队列
+
   Ptr<PointToPointNetDevice> devB = m_deviceFactory.Create<PointToPointNetDevice> ();
   devB->SetAddress (Mac48Address::Allocate ());
-  b->AddDevice (devB);
+  b->AddDevice (devB); // 2 给destination node安装网卡设备QbbNetDevice
+
   Ptr<Queue> queueB = m_queueFactory.Create<Queue> ();
-  devB->SetQueue (queueB);
+  devB->SetQueue (queueB); // 3 给destination node的网卡设备安装出队列
+
   // If MPI is enabled, we need to see if both nodes have the same system id 
   // (rank), and the rank is the same as this instance.  If both are true, 
   //use a normal p2p channel, otherwise use a remote channel
@@ -266,8 +270,8 @@ PointToPointHelper::Install (Ptr<Node> a, Ptr<Node> b)
       devB->AggregateObject (mpiRecB);
     }
 
-  devA->Attach (channel);
-  devB->Attach (channel);
+  devA->Attach (channel); // 4 给source node的网卡设备安装通道管理
+  devB->Attach (channel); // 4 给destination node的网卡设备安装通道管理
   container.Add (devA);
   container.Add (devB);
 

@@ -228,13 +228,14 @@ namespace ns3 {
 		return m_bytesInQueue[qIndex];
 	}
 
-
+	// 返回所有队列累计的总字节数，即整个 BEgressQueue 当前缓存的数据总量。
 	uint32_t
 		BEgressQueue::GetNBytesTotal() const
 	{
 		return m_bytesInQueueTotal;
 	}
 
+	// 返回指定队列（qIndex）当前缓存的字节数。
 	uint32_t
 		BEgressQueue::GetLastQueue()
 	{

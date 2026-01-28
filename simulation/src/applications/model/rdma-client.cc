@@ -137,7 +137,7 @@ void RdmaClient::StartApplication (void)
   NS_LOG_FUNCTION_NOARGS ();
   // get RDMA driver and add up queue pair
   Ptr<Node> node = GetNode();
-  Ptr<RdmaDriver> rdma = node->GetObject<RdmaDriver>();
+  Ptr<RdmaDriver> rdma = node->GetObject<RdmaDriver>(); // 获取RdmaDriver对象
   rdma->AddQueuePair(m_size, m_pg, m_sip, m_dip, m_sport, m_dport, m_win, m_baseRtt, MakeCallback(&RdmaClient::Finish, this));
 }
 

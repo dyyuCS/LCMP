@@ -26,6 +26,10 @@ RdmaQueuePair::RdmaQueuePair(uint16_t pg, Ipv4Address _sip, Ipv4Address _dip, ui
 	dip = _dip;
 	sport = _sport;
 	dport = _dport;
+
+	flow_id = 0; //[new] 生成流ID
+	trace_flow_id = 0; //[new] 生成追踪流ID, for debugging
+
 	m_size = 0;
 	snd_nxt = snd_una = 0;
 	m_pg = pg;
@@ -153,6 +157,27 @@ uint64_t RdmaQueuePair::HpGetCurWin(){
 bool RdmaQueuePair::IsFinished(){
 	return snd_una >= m_size;
 }
+
+// [new] 生成流ID的辅助函数
+uint32_t RdmaQueuePair::GenerateFlowId(uint32_t sip, uint32_t dip, uint32_t sport, uint32_t dport) {
+    // 根据源IP、目的IP和数据包大小生成流ID
+    // 通过异或操作合并源IP和目的IP,然后左移16位
+    // 最后与数据包大小做位或运算得到最终的流ID
+    // 使用更多参数生成唯一流ID
+    // return ((sip ^ dip) << 16) | size;
+    return (sip << 16) | dip ^ sport ^ dport;
+}
+
+// [new] 生成追踪流ID的辅助函数
+uint32_t RdmaQueuePair::GenerateTraceFlowId(uint32_t sip, uint32_t dip, uint64_t size) {
+	// 根据源IP、目的IP和数据包大小生成流ID
+	// 通过异或操作合并源IP和目的IP,然后左移16位
+	// 最后与数据包大小做位或运算得到最终的流ID
+	// 使用更多参数生成唯一流ID
+	return ((sip ^ dip) << 16) | size;
+}
+
+
 
 /*********************
  * RdmaRxQueuePair

@@ -136,6 +136,7 @@ Node::AddApplication (Ptr<Application> application)
   uint32_t index = m_applications.size ();
   m_applications.push_back (application);
   application->SetNode (this);
+  // 执行应用的Start方法
   Simulator::ScheduleWithContext (GetId (), Seconds (0.0), 
                                   &Application::Start, application);
   return index;

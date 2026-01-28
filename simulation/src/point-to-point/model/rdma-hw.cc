@@ -202,6 +202,7 @@ void RdmaHw::Setup(QpCompleteCallback cb){
 	m_qpCompleteCallback = cb;
 }
 
+// 根据目标IP查找应该用哪个网卡
 uint32_t RdmaHw::GetNicIdxOfQp(Ptr<RdmaQueuePair> qp){
 	auto &v = m_rtTable[qp->dip.Get()];
 	if (v.size() > 0){
@@ -220,17 +221,30 @@ Ptr<RdmaQueuePair> RdmaHw::GetQp(uint32_t dip, uint16_t sport, uint16_t pg){
 		return it->second;
 	return NULL;
 }
+
+// [重点] 在硬件层添加 单条网络流流 到RDMA队列
 void RdmaHw::AddQueuePair(uint64_t size, uint16_t pg, Ipv4Address sip, Ipv4Address dip, uint16_t sport, uint16_t dport, uint32_t win, uint64_t baseRtt, Callback<void> notifyAppFinish){
 	// create qp
-	Ptr<RdmaQueuePair> qp = CreateObject<RdmaQueuePair>(pg, sip, dip, sport, dport);
+	Ptr<RdmaQueuePair> qp = CreateObject<RdmaQueuePair>(pg, sip, dip, sport, dport); // 会设置QP的目标地址
 	qp->SetSize(size);
 	qp->SetWin(win);
 	qp->SetBaseRtt(baseRtt);
 	qp->SetVarWin(m_var_win);
 	qp->SetAppNotifyCallback(notifyAppFinish);
 
+	// [NEW] 生成唯一流ID
+	uint32_t trace_flow_id = RdmaQueuePair::GenerateTraceFlowId(sip.Get(), dip.Get(), size);
+	qp->trace_flow_id = trace_flow_id;
+
+	// [NEW] 加flow_id，用于移除DCI交换机 开销函数表的已完成的流
+	// uint64_t flow_id = RdmaHw::GetQpKey(dip.Get(), sport, pg);
+	uint16_t target_sport = qp->sport;
+	uint16_t target_dport = qp->dport;
+	uint64_t flow_id = RdmaQueuePair::GenerateFlowId(qp->sip.Get(), qp->dip.Get(), target_sport, target_dport);
+	qp->flow_id = flow_id;
+
 	// add qp
-	uint32_t nic_idx = GetNicIdxOfQp(qp);
+	uint32_t nic_idx = GetNicIdxOfQp(qp); // 根据qp->dip（目标IP）查找m_rtTable，即查找路由表，决定用哪个端口
 	m_nic[nic_idx].qpGrp->AddQp(qp);
 	uint64_t key = GetQpKey(dip.Get(), sport, pg);
 	m_qpMap[key] = qp;
@@ -239,22 +253,22 @@ void RdmaHw::AddQueuePair(uint64_t size, uint16_t pg, Ipv4Address sip, Ipv4Addre
 	DataRate m_bps = m_nic[nic_idx].dev->GetDataRate();
 	qp->m_rate = m_bps;
 	qp->m_max_rate = m_bps;
-	if (m_cc_mode == 1){
+	if (m_cc_mode == 1){ // DCQCN mode
 		qp->mlx.m_targetRate = m_bps;
-	}else if (m_cc_mode == 3){
+	}else if (m_cc_mode == 3){ // HPCC mode
 		qp->hp.m_curRate = m_bps;
 		if (m_multipleRate){
 			for (uint32_t i = 0; i < IntHeader::maxHop; i++)
 				qp->hp.hopState[i].Rc = m_bps;
 		}
-	}else if (m_cc_mode == 7){
+	}else if (m_cc_mode == 7){ // TIMELY mode
 		qp->tmly.m_curRate = m_bps;
-	}else if (m_cc_mode == 10){
+	}else if (m_cc_mode == 10){ // PINT mode
 		qp->hpccPint.m_curRate = m_bps;
 	}
 
 	// Notify Nic
-	m_nic[nic_idx].dev->NewQp(qp);
+	m_nic[nic_idx].dev->NewQp(qp); // 通知对应的网卡QbbNetDevice
 }
 
 void RdmaHw::DeleteQueuePair(Ptr<RdmaQueuePair> qp){
@@ -394,7 +408,15 @@ int RdmaHw::ReceiveAck(Ptr<Packet> p, CustomHeader &ch){
 	int i;
 	Ptr<RdmaQueuePair> qp = GetQp(ch.sip, port, qIndex);
 	if (qp == NULL){
-		std::cout << "ERROR: " << "node:" << m_node->GetId() << ' ' << (ch.l3Prot == 0xFC ? "ACK" : "NACK") << " NIC cannot find the flow\n";
+		// 追加调试信息：打印用于查找 QP 的键（dip=sip, sport=ACK.dport, pg）
+		uint32_t key_dip = ch.sip;
+		uint16_t key_sport = port;
+		uint16_t key_pg = qIndex;
+		uint64_t key = GetQpKey(key_dip, key_sport, key_pg);
+		std::cout << "ERROR: node:" << m_node->GetId() << ' ' << (ch.l3Prot == 0xFC ? "ACK" : "NACK")
+				  << " NIC cannot find the flow. key=" << std::hex << key
+				  << std::dec << " dip=" << key_dip << " sport=" << key_sport << " pg=" << key_pg
+				  << " (ack.sip=" << ch.sip << ", ack.dip=" << ch.dip << ")" << "\n";
 		return 0;
 	}
 
@@ -423,13 +445,13 @@ int RdmaHw::ReceiveAck(Ptr<Packet> p, CustomHeader &ch){
 		} 
 	}
 
-	if (m_cc_mode == 3){
+	if (m_cc_mode == 3){ // HPCC mode
 		HandleAckHp(qp, p, ch);
-	}else if (m_cc_mode == 7){
+	}else if (m_cc_mode == 7){ // TIMELY mode
 		HandleAckTimely(qp, p, ch);
-	}else if (m_cc_mode == 8){
+	}else if (m_cc_mode == 8){ // DCTCP mode
 		HandleAckDctcp(qp, p, ch);
-	}else if (m_cc_mode == 10){
+	}else if (m_cc_mode == 10){ // HPCC-PINT mode
 		HandleAckHpPint(qp, p, ch);
 	}
 	// ACK may advance the on-the-fly window, allowing more packets to send
@@ -453,7 +475,8 @@ int RdmaHw::Receive(Ptr<Packet> p, CustomHeader &ch){
 int RdmaHw::ReceiverCheckSeq(uint32_t seq, Ptr<RdmaRxQueuePair> q, uint32_t size){
 	uint32_t expected = q->ReceiverNextExpectedSeq;
 	if (seq == expected){
-		q->ReceiverNextExpectedSeq = expected + size;
+		q->ReceiverNextExpectedSeq = expected + size; // 关键点:序号更新按字节数
+
 		if (q->ReceiverNextExpectedSeq >= q->m_milestone_rx){
 			q->m_milestone_rx += m_ack_interval;
 			return 1; //Generate ACK
@@ -499,6 +522,11 @@ void RdmaHw::RecoverQueue(Ptr<RdmaQueuePair> qp){
 void RdmaHw::QpComplete(Ptr<RdmaQueuePair> qp){
 	NS_ASSERT(!m_qpCompleteCallback.IsNull());
 	if (m_cc_mode == 1){
+        // printf("%lu [Debug] QpComplete cancel timers: node:%u sip:%08x dip:%08x sport:%u dport:%u alphaEvt:%s decEvt:%s rpTimer:%s\n",
+        //     Simulator::Now().GetTimeStep(), m_node->GetId(), qp->sip.Get(), qp->dip.Get(), qp->sport, qp->dport,
+        //     Simulator::IsExpired(qp->mlx.m_eventUpdateAlpha) ? "expired" : "active",
+        //     Simulator::IsExpired(qp->mlx.m_eventDecreaseRate) ? "expired" : "active",
+        //     Simulator::IsExpired(qp->mlx.m_rpTimer) ? "expired" : "active");
 		Simulator::Cancel(qp->mlx.m_eventUpdateAlpha);
 		Simulator::Cancel(qp->mlx.m_eventDecreaseRate);
 		Simulator::Cancel(qp->mlx.m_rpTimer);
@@ -512,6 +540,7 @@ void RdmaHw::QpComplete(Ptr<RdmaQueuePair> qp){
 
 	// delete the qp
 	DeleteQueuePair(qp);
+
 }
 
 void RdmaHw::SetLinkDown(Ptr<QbbNetDevice> dev){
@@ -545,6 +574,7 @@ void RdmaHw::RedistributeQp(){
 	}
 }
 
+// 数据包从QP创建中进行分解
 Ptr<Packet> RdmaHw::GetNxtPacket(Ptr<RdmaQueuePair> qp){
 	uint32_t payload_size = qp->GetBytesLeft();
 	if (m_mtu < payload_size)
@@ -576,8 +606,13 @@ Ptr<Packet> RdmaHw::GetNxtPacket(Ptr<RdmaQueuePair> qp){
 	p->AddHeader (ppp);
 
 	// update state
-	qp->snd_nxt += payload_size;
+	qp->snd_nxt += payload_size; //关键点:序号增加按字节数
+
+	// std::cout << "[TEST] qp->snd_nxt:" << qp->snd_nxt << std::endl; // 导致溢出的关键!!!
 	qp->m_ipid++;
+
+	// Add flow ID to packet
+	p->AddTraceFlowId(qp->trace_flow_id);  // [new]添加flow ID ===================
 
 	// return
 	return p;
@@ -669,6 +704,8 @@ void RdmaHw::CheckRateDecreaseMlx(Ptr<RdmaQueuePair> q){
 		// reset rate increase related things
 		q->mlx.m_rpTimeStage = 0;
 		q->mlx.m_decrease_cnp_arrived = false;
+		// printf("%lu [Debug] Cancel rpTimer before reschedule: node:%u sip:%08x dip:%08x sport:%u dport:%u rpTimeStage:%u\n",
+		// 	Simulator::Now().GetTimeStep(), m_node->GetId(), q->sip.Get(), q->dip.Get(), q->sport, q->dport, q->mlx.m_rpTimeStage);
 		Simulator::Cancel(q->mlx.m_rpTimer);
 		q->mlx.m_rpTimer = Simulator::Schedule(MicroSeconds(m_rpgTimeReset), &RdmaHw::RateIncEventTimerMlx, this, q);
 		#if PRINT_LOG

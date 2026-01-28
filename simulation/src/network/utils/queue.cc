@@ -123,7 +123,7 @@ Queue::Peek (void) const
   return DoPeek ();
 }
 
-
+// 返回当前队列中的包数。
 uint32_t 
 Queue::GetNPackets (void) const
 {
@@ -132,6 +132,7 @@ Queue::GetNPackets (void) const
   return m_nPackets;
 }
 
+// 返回当前队列中的总字节数。
 uint32_t
 Queue::GetNBytes (void) const
 {
@@ -148,6 +149,7 @@ Queue::IsEmpty (void) const
   return m_nPackets == 0;
 }
 
+// 返回累计接收的总字节数。
 uint32_t
 Queue::GetTotalReceivedBytes (void) const
 {
@@ -156,6 +158,7 @@ Queue::GetTotalReceivedBytes (void) const
   return m_nTotalReceivedBytes;
 }
 
+// 返回累计接收的总包数。
 uint32_t
 Queue::GetTotalReceivedPackets (void) const
 {

@@ -3,10 +3,19 @@ This folder includes the scripts for generating traffic.
 
 ## Usage
 
-`python traffic_gen.py -h` for help.
+`python3 traffic_gen_only_for_interDC.py -h` or 
+`python3 traffic_gen_only_for_interDC_specify2dc.py -h` for help.
 
 Example:
-`python traffic_gen.py -c WebSearch_distribution.txt -n 320 -l 0.3 -b 100G -t 0.1` generates traffic according to the web search flow size distribution, for 320 hosts, at 30% network load with 100Gbps host bandwidth for 0.1 seconds.
+```bash
+python3 traffic_gen_only_for_interDC.py -c flowCDF/WebSearch_distribution.txt --dc_count 8 --dc_nnodes 16 -l 0.3 -b 100G -t 0.01 -o "traffic_WebSearch_8DC-0.3util.txt"
+```
+generates inter data center traffic according to the web search flow size distribution, for 8 data center network with 16 hosts in each data center, at 30% network load with 100Gbps host bandwidth for 0.01 seconds.
+
+```bash
+python3 traffic_gen_only_for_interDC_specify2dc.py -c flowCDF/WebSearch_distribution.txt --dc_count 8 --dc_nnodes 16 -l 0.3 -b 100G -t 0.01 -o "traffic_WebSearch_8DC-onlyDC1-8-0.3util.txt"
+```
+generates the same inter data center traffic between only DC1 and DC13.
 
 The generate traffic can be directly used by the simulation.
 

@@ -1,75 +1,111 @@
-# HPCC NS-3 simulator
-This is an NS-3 simulator for [HPCC: High Precision Congestion Control (SIGCOMM' 2019)](https://rmiao.github.io/publications/hpcc-li.pdf). It also includes the implementation of DCQCN, TIMELY, DCTCP, PFC, ECN and Broadcom shared buffer switch.
+# Simulation Folder
 
-We have update this simulator to support HPCC-PINT, which reduces the INT header overhead to just 1 byte. This improves the long flow completion time. See [PINT: Probabilistic In-band Network Telemetry (SIGCOMM' 2020)](https://liyuliang001.github.io/publications/pint.pdf).
+This folder contains an NS-3-based network simulator for the study and evaluation of datacenter network load balancing schemes, especially focusing on the implementation and comparison of ECMP, UCMP, and LCMP (our proposed method) in `dci-switch-node.cc`.
 
-It is based on NS-3 version 3.17.
+## Main Focus
+
+- **Purpose**: To simulate and analyze different load balancing algorithms (Equal-Cost Multi-Path - ECMP, Unequal-Cost Multi-Path - UCMP, and LCMP - LCMP/Ours) for datacenter switching fabrics.
+- **Key Switch Logic**: All core routing logic is implemented in `src/point-to-point/model/dci-switch-node.cc`, where you can find clear implementation and configurability of the three major schemes.
+- **Supported Devices**: The simulator also supports Broadcom shared buffer switch architectures to better replicate real-world datacenter hardware.
+
+## Load Balancing Schemes
+
+- **ECMP (Equal-Cost Multi-Path)**: Default multi-path routing; hashes flows across all available paths with equal cost. Simple and widely used, but may cause imbalanced throughput with uneven path utilization.
+- **UCMP (Unequal-Cost Multi-Path)**: Considers path link capacities to distribute flows non-uniformly proportionate to available bandwidth.
+- **LCMP/Ours (Long-Haul Cost-Aware Multi-Path)**: A novel scheme proposed in this branch, which dynamically considers path delay, bandwidth, queue/congestion states, and other real-time metrics to intelligently route flows for maximized utilization and minimized congestion.
+- **Switching the Algorithm**: Schemes can typically be controlled via the `RoutingMode` attribute in the DCI switch configuration:
+  - 0: ECMP
+  - 1: UCMP
+  - 2: LCMP (Ours)
+  Modifying this attribute in scripts or configuration files allows you to easily compare the schemes.
 
 ## Quick Start
 
-### Build
-`./waf configure`
+### 1. Build
+```bash
+./waf configure
+```
 
-Please note if gcc version > 5, compilation will fail due to some ns3 code style.  If this what you encounter, please use:
+### 2. Configuring Experiments
+- See `mix/config_doc.txt` for example experimental configurations describing topologies and simulation parameters.
+- Topology examples: `mix/8DC-hetero/topology_LeafSpine_MultiDC8-posCor.txt` and others.
+- Use the Python automation scripts (such as `server_simulation_batch_8DC.py`) for batch generation and execution of test cases.
 
-`CC='gcc-5' CXX='g++-5' ./waf configure`
+### 3. Running Simulations
 
-### Experiment config
-Please see `mix/config.txt` for example. 
+Due to the large number of experimental cases and the need for reproducibility, we recommend using the provided automation scripts for batch simulation runs. These scripts will automatically loop over configuration sets, routing schemes, or experimental parameters as needed.
 
-`mix/config_doc.txt` is a explanation of the example (texts in {..} are explanations).
+- **Automated (Recommended):**
+  ```bash
+  # For example:
+  python3 server_simulation_batch_8DC.py
+  ```
+- **Manual Run (advanced or for debugging only):**
+  You may run a specific experiment directly using NS-3:
+  ```bash
+  # for example:
+  ./waf --run 'scratch/third mix/8DC-hetero/config_batch.txt'
+  ```
 
-`mix/fat.txt` is the topology used in HPCC paper's evaluation, and also in PINT paper's HPCC-PINT evaluation.
+#### Experiment Types in the Paper
 
-### Run
-The direct command to run is:
-`./waf --run 'scratch/third mix/config.txt'`
+Experiments in the paper are organized into two categories:
 
-We provide a `run.py` for automatically *generating config* and *running experiment*. Please `python run.py -h` for usage.
-Example usage:
-`python run.py --cc hp --trace flow --bw 100 --topo topology --hpai 50`
+**Small-Scale (8 datacenters) Tests**
+- Typical mini testbeds (e.g., 8 datacenters) for benchmarking routing and cost-function mechanisms. Use these scripts for rapid iteration and core algorithm validation:
+  - Motivation Experiment: 
+    ```bash
+    python3 server_simulation_batch_8DC_linkUtil.py 
+    -o "server-output/Figure1-posCor_8DC_original_flow_linkUtil"
+    ```
+  - Routing and Traffic Load Comparison:
+    ```bash
+    python3 server_simulation_batch_8DC.py 
+    -o "server-output/Figure5-posCor_8DC_3routing_3traffic"
+    ```
+  - Different Traffic Datasets Comparison(Robustness Analysis):
+    ```bash
+    python3 server_simulation_batch_8DC_differDataset.py 
+    -o "server-output/Figure9-posCor_8DC_differDataset"
+    ```
+  - Different Congestion Control Comparison(Robustness Analysis):
+    ```bash
+    python3 server_simulation_batch_8DC_differCc.py
+    -o "server-output/Figure10-output-8DC-hetero-posCor-differCC"
+    ```
+  - Ablation Study:
+    ```bash
+    python3 server_simulation_batch_ablationStudy.py
+    -o "server-output/Figure11/ablation-study"
+    ```
+  - Path Cost Tests (Cost Function Component Analysis):
+    ```bash
+    python3 server_simulation_batch_staticCost.py
+    -o "server-output/Figure11/static-cost"
+    ```
+  - Congestion Cost Tests (Cost Function Component Analysis):
+    ```bash
+    python3 server_simulation_batch_congestionCost.py
+    -o "server-output/Figure11/congestion-cost"
+    ```
+  - Global Weight Tests (Cost Function Component Analysis):
+    ```bash
+    python3 server_simulation_batch_globalWeight.py
+    -o "server-output/Figure11/global-weight"
+    ```    
+  - All scripts support `-h` to display configurable options and help.
 
-To run HPCC-PINT, try:
-`python run.py --cc hpccPint --trace flow --bw 100 --topo topology --hpai 50 --pint_log_base 1.05 --pint_prob 1`
+**Large-Scale (13 datacenters) Experiments**
+- For scaling up to real, more complex topologies and mega-data center scenarios, and for stress-testing LCMP in even broader environments. 
+  - Routing and Traffic Load Comparison:
+    ```bash
+    python3 server_simulation_batch_for13DC.py
+    -o "server-output/Figure-7&8-13DC_3routing_3traffic"
+    ```
 
-## Files added/edited based on NS3
-The major ones are listed here. There could be some files not listed here that are not important or not related to core logic.
+## Notes
+- See code comments in `dci-switch-node.cc` for in-depth logic and customizability.
+- Further attributes for tuning cost computation (weights, thresholds, etc.) are exposed as NS-3 attributes in the DCI switch implementation.
+- The simulator may evolve as the research advances.
 
-`point-to-point/model/qbb-net-device.cc/h`: the net-device RDMA
-
-`point-to-point/model/pause-header.cc/h`: the header of PFC packet
-
-`point-to-point/model/cn-header.cc/h`: the header of CNP
-
-`point-to-point/model/pint.cc/h`: the PINT encoding/decoding algorithms
-
-`point-to-point/model/qbb-header.cc/h`: the header of ACK
-
-`point-to-point/model/qbb-channel.cc/h`: the channel of qbb-net-device
-
-`point-to-point/model/qbb-remote-channel.cc/h`
-
-`point-to-point/model/rdma-driver.cc/h`: layer of assigning qp and manage multiple NICs
-
-`point-to-point/model/rdma-queue-pair.cc/h`: queue pair
-
-`point-to-point/model/rdma-hw.cc/h`: the core logic of congestion control
-
-`point-to-point/model/switch-node.cc/h`: the node class for switch
-
-`point-to-point/model/switch-mmu.cc/h`: the mmu module of switch
-
-`network/utils/broadcom-egress-queue.cc/h`: the multi-queue implementation of a switch port
-
-`network/utils/custom-header.cc/h`: a customized header class for speeding up header parsing
-
-`network/utils/int-header.cc/h`: the header of INT
-
-`applications/model/rdma-client.cc/h`: the application of generating RDMA traffic
-
-## Notes on other schemes
-The DCQCN implementation is based on [Mellanox's implementation on CX4 and newer version](https://community.mellanox.com/s/article/dcqcn-parameters), which is slightly different from the DCQCN paper version.
-
-The TIMELY implementation is based on our own understanding of the TIMELY paper. We believe we correctly implemented it. We use the parameters in the TIMELY paper. For parameters whose settings are absent in the TIMELY paper, we get from [this paper (footnote 4)](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/09/ecndelay-conext16.pdf).
-
-The DCTCP implementation is a version that we envision DCTCP will be implemented in hardware. It starts at line rate (not slow start) which we believe is necessary in future high-speed network. It also does not delay ACK, because delayed ACk is for saving software overhead. These settings are consistent with other schemes.
+For more information, examine the annotated code in the core model and the experiment results generated by the analysis scripts.

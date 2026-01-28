@@ -46,7 +46,7 @@ TypeId SwitchNode::GetTypeId (void)
 SwitchNode::SwitchNode(){
 	m_ecmpSeed = m_id;
 	m_node_type = 1;
-	m_mmu = CreateObject<SwitchMmu>();
+	m_mmu = CreateObject<SwitchMmu>(); // 创建交换机MMU
 	for (uint32_t i = 0; i < pCnt; i++)
 		for (uint32_t j = 0; j < pCnt; j++)
 			for (uint32_t k = 0; k < qCnt; k++)
@@ -59,6 +59,22 @@ SwitchNode::SwitchNode(){
 		m_u[i] = 0;
 }
 
+void SwitchNode::CheckAndSendPfc(uint32_t inDev, uint32_t qIndex){
+	Ptr<QbbNetDevice> device = DynamicCast<QbbNetDevice>(m_devices[inDev]);
+	if (m_mmu->CheckShouldPause(inDev, qIndex)){
+		device->SendPfc(qIndex, 0);
+		m_mmu->SetPause(inDev, qIndex);
+	}
+}
+void SwitchNode::CheckAndSendResume(uint32_t inDev, uint32_t qIndex){
+	Ptr<QbbNetDevice> device = DynamicCast<QbbNetDevice>(m_devices[inDev]);
+	if (m_mmu->CheckShouldResume(inDev, qIndex)){
+		device->SendPfc(qIndex, 1);
+		m_mmu->SetResume(inDev, qIndex);
+	}
+}
+
+// 交换机根据路由表选择下一跳的端口号 [采用ECMP方式]
 int SwitchNode::GetOutDev(Ptr<const Packet> p, CustomHeader &ch){
 	// look up entries
 	auto entry = m_rtTable.find(ch.dip);
@@ -85,26 +101,16 @@ int SwitchNode::GetOutDev(Ptr<const Packet> p, CustomHeader &ch){
 		buf.u32[2] = ch.ack.sport | ((uint32_t)ch.ack.dport << 16);
 
 	uint32_t idx = EcmpHash(buf.u8, 12, m_ecmpSeed) % nexthops.size();
+	
+	// std::cout << "[SwitchNode] 当前交换机ID: " << GetId()
+	// 			<< ", 下一跳端口: " << nexthops[idx]
+	// 			<< std::endl;
 	return nexthops[idx];
 }
 
-void SwitchNode::CheckAndSendPfc(uint32_t inDev, uint32_t qIndex){
-	Ptr<QbbNetDevice> device = DynamicCast<QbbNetDevice>(m_devices[inDev]);
-	if (m_mmu->CheckShouldPause(inDev, qIndex)){
-		device->SendPfc(qIndex, 0);
-		m_mmu->SetPause(inDev, qIndex);
-	}
-}
-void SwitchNode::CheckAndSendResume(uint32_t inDev, uint32_t qIndex){
-	Ptr<QbbNetDevice> device = DynamicCast<QbbNetDevice>(m_devices[inDev]);
-	if (m_mmu->CheckShouldResume(inDev, qIndex)){
-		device->SendPfc(qIndex, 1);
-		m_mmu->SetResume(inDev, qIndex);
-	}
-}
-
+// 基于端口号进行发送
 void SwitchNode::SendToDev(Ptr<Packet>p, CustomHeader &ch){
-	int idx = GetOutDev(p, ch);
+	int idx = GetOutDev(p, ch); // 确认 出端口号
 	if (idx >= 0){
 		NS_ASSERT_MSG(m_devices[idx]->IsLinkUp(), "The routing table look up should return link that is up");
 
@@ -186,12 +192,14 @@ void SwitchNode::ClearTable(){
 	m_rtTable.clear();
 }
 
+// 当switch对应网卡QbbNetDevice收到数据包后，进行发送
 // This function can only be called in switch mode
 bool SwitchNode::SwitchReceiveFromDevice(Ptr<NetDevice> device, Ptr<Packet> packet, CustomHeader &ch){
 	SendToDev(packet, ch);
 	return true;
 }
 
+// 交换机通知设备队列出队，[重要]对packet添加INT padding
 void SwitchNode::SwitchNotifyDequeue(uint32_t ifIndex, uint32_t qIndex, Ptr<Packet> p){
 	FlowIdTag t;
 	p->PeekPacketTag(t);
@@ -201,7 +209,7 @@ void SwitchNode::SwitchNotifyDequeue(uint32_t ifIndex, uint32_t qIndex, Ptr<Pack
 		m_mmu->RemoveFromEgressAdmission(ifIndex, qIndex, p->GetSize());
 		m_bytes[inDev][ifIndex][qIndex] -= p->GetSize();
 		if (m_ecnEnabled){
-			bool egressCongested = m_mmu->ShouldSendCN(ifIndex, qIndex);
+			bool egressCongested = m_mmu->ShouldSendCN(ifIndex, qIndex); // DCQCN的处理
 			if (egressCongested){
 				PppHeader ppp;
 				Ipv4Header h;
@@ -218,8 +226,11 @@ void SwitchNode::SwitchNotifyDequeue(uint32_t ifIndex, uint32_t qIndex, Ptr<Pack
 	if (1){
 		uint8_t* buf = p->GetBuffer();
 		if (buf[PppHeader::GetStaticSize() + 9] == 0x11){ // udp packet
-			IntHeader *ih = (IntHeader*)&buf[PppHeader::GetStaticSize() + 20 + 8 + 6]; // ppp, ip, udp, SeqTs, INT
+			// 修改已存在的INT header
+			// INT header的位置 = PPP header大小 + 20 (IPv4 header大小) + 8 (UDP header大小) + 6 (SeqTs header大小)
+			IntHeader *ih = (IntHeader*)&buf[PppHeader::GetStaticSize() + 20 + 8 + 6]; // ppp, ip, udp, SeqTs, INT // INT padding
 			Ptr<QbbNetDevice> dev = DynamicCast<QbbNetDevice>(m_devices[ifIndex]);
+			// 修改INT header的内容
 			if (m_ccMode == 3){ // HPCC
 				ih->PushHop(Simulator::Now().GetTimeStep(), m_txBytes[ifIndex], dev->GetQueue()->GetNBytesTotal(), dev->GetDataRate().GetBitRate());
 			}else if (m_ccMode == 10){ // HPCC-PINT

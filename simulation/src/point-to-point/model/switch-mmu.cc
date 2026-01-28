@@ -33,6 +33,7 @@ namespace ns3 {
 		memset(paused, 0, sizeof(paused));
 		memset(egress_bytes, 0, sizeof(egress_bytes));
 	}
+	
 	bool SwitchMmu::CheckIngressAdmission(uint32_t port, uint32_t qIndex, uint32_t psize){
 		if (psize + hdrm_bytes[port][qIndex] > headroom[port] && psize + GetSharedUsed(port, qIndex) > GetPfcThreshold(port)){
 			printf("%lu %u Drop: queue:%u,%u: Headroom full\n", Simulator::Now().GetTimeStep(), node_id, port, qIndex);

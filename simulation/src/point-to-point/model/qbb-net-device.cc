@@ -246,14 +246,15 @@ namespace ns3 {
 		QbbNetDevice::TransmitComplete(void)
 	{
 		NS_LOG_FUNCTION(this);
-		NS_ASSERT_MSG(m_txMachineState == BUSY, "Must be BUSY if transmitting");
+		NS_ASSERT_MSG(m_txMachineState == BUSY, "Must be BUSY if transmitting"); // 注释
 		m_txMachineState = READY;
-		NS_ASSERT_MSG(m_currentPkt != 0, "QbbNetDevice::TransmitComplete(): m_currentPkt zero");
+		NS_ASSERT_MSG(m_currentPkt != 0, "QbbNetDevice::TransmitComplete(): m_currentPkt zero"); // 注释
 		m_phyTxEndTrace(m_currentPkt);
 		m_currentPkt = 0;
 		DequeueAndTransmit();
 	}
 
+// [server和switch都经过这里]出队列操作并开始传输
 	void
 		QbbNetDevice::DequeueAndTransmit(void)
 	{
@@ -261,7 +262,8 @@ namespace ns3 {
 		if (!m_linkUp) return; // if link is down, return
 		if (m_txMachineState == BUSY) return;	// Quit if channel busy
 		Ptr<Packet> p;
-		if (m_node->GetNodeType() == 0){
+		// Server host==================================================== 
+		if (m_node->GetNodeType() == 0){ 
 			int qIndex = m_rdmaEQ->GetNextQindex(m_paused);
 			if (qIndex != -1024){
 				if (qIndex == -1){ // high prio
@@ -276,7 +278,7 @@ namespace ns3 {
 
 				// transmit
 				m_traceQpDequeue(p, lastQp);
-				TransmitStart(p);
+				TransmitStart(p); // 开始传输
 
 				// update for the next avail time
 				m_rdmaPktSent(lastQp, p, m_tInterframeGap);
@@ -294,7 +296,8 @@ namespace ns3 {
 				}
 			}
 			return;
-		}else{   //switch, doesn't care about qcn, just send
+		// switch ==================================================== 
+		}else{   // doesn't care about qcn, just send
 			p = m_queue->DequeueRR(m_paused);		//this is round-robin
 			if (p != 0){
 				m_snifferTrace(p);
@@ -307,7 +310,7 @@ namespace ns3 {
 				FlowIdTag t;
 				uint32_t qIndex = m_queue->GetLastQueue();
 				if (qIndex == 0){//this is a pause or cnp, send it immediately!
-					m_node->SwitchNotifyDequeue(m_ifIndex, qIndex, p);
+					m_node->SwitchNotifyDequeue(m_ifIndex, qIndex, p); // 交换机对数据包添加INT padding
 					p->RemovePacketTag(t);
 				}else{
 					m_node->SwitchNotifyDequeue(m_ifIndex, qIndex, p);
@@ -346,6 +349,7 @@ namespace ns3 {
 		DequeueAndTransmit();
 	}
 
+	// [server和switch都经过这里]接收数据包
 	void
 		QbbNetDevice::Receive(Ptr<Packet> packet)
 	{
@@ -373,10 +377,10 @@ namespace ns3 {
 			if (!m_qbbEnabled) return;
 			unsigned qIndex = ch.pfc.qIndex;
 			if (ch.pfc.time > 0){
-				m_tracePfc(1);
+				// m_tracePfc(1);
 				m_paused[qIndex] = true;
 			}else{
-				m_tracePfc(0);
+				// m_tracePfc(0);
 				Resume(qIndex);
 			}
 		}else { // non-PFC packets (data, ACK, NACK, CNP...)
@@ -398,6 +402,7 @@ namespace ns3 {
 		return false;
 	}
 
+	// switch发送数据包
 	bool QbbNetDevice::SwitchSend (uint32_t qIndex, Ptr<Packet> packet, CustomHeader &ch){
 		m_macTxTrace(packet);
 		m_traceEnqueue(packet, qIndex);
@@ -434,6 +439,7 @@ namespace ns3 {
 		return true;
 	}
 
+  // [重点] 开始传输数据包
 	bool
 		QbbNetDevice::TransmitStart(Ptr<Packet> p)
 	{
@@ -444,16 +450,16 @@ namespace ns3 {
 		// We need to tell the channel that we've started wiggling the wire and
 		// schedule an event that will be executed when the transmission is complete.
 		//
-		NS_ASSERT_MSG(m_txMachineState == READY, "Must be READY to transmit");
+		NS_ASSERT_MSG(m_txMachineState == READY, "Must be READY to transmit"); // 注释
 		m_txMachineState = BUSY;
 		m_currentPkt = p;
 		m_phyTxBeginTrace(m_currentPkt);
-		Time txTime = Seconds(m_bps.CalculateTxTime(p->GetSize()));
+		Time txTime = Seconds(m_bps.CalculateTxTime(p->GetSize())); // 计算传输时间
 		Time txCompleteTime = txTime + m_tInterframeGap;
 		NS_LOG_LOGIC("Schedule TransmitCompleteEvent in " << txCompleteTime.GetSeconds() << "sec");
-		Simulator::Schedule(txCompleteTime, &QbbNetDevice::TransmitComplete, this);
+		Simulator::Schedule(txCompleteTime, &QbbNetDevice::TransmitComplete, this); // 在传输完成后调用TransmitComplete函数
 
-		bool result = m_channel->TransmitStart(p, this, txTime);
+		bool result = m_channel->TransmitStart(p, this, txTime); // 通过信道开始传输
 		if (result == false)
 		{
 			m_phyTxDropTrace(p);
@@ -471,10 +477,12 @@ namespace ns3 {
 	   return true;
    }
 
+	 // [重点] 创建QP,进行出队操作并传输
    void QbbNetDevice::NewQp(Ptr<RdmaQueuePair> qp){
 	   qp->m_nextAvail = Simulator::Now();
 	   DequeueAndTransmit();
    }
+
    void QbbNetDevice::ReassignedQp(Ptr<RdmaQueuePair> qp){
 	   DequeueAndTransmit();
    }

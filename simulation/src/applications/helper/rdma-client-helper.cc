@@ -37,6 +37,7 @@ RdmaClientHelper::RdmaClientHelper (uint16_t pg, Ipv4Address sip, Ipv4Address di
 	SetAttribute ("SourcePort", UintegerValue (sport));
 	SetAttribute ("DestPort", UintegerValue (dport));
 	SetAttribute ("WriteSize", UintegerValue (size));
+  // std::cout << "[test]WriteSize: " << size << std::endl;
 	SetAttribute ("Window", UintegerValue (win));
 	SetAttribute ("BaseRtt", UintegerValue (baseRtt));
 }
@@ -54,8 +55,8 @@ RdmaClientHelper::Install (NodeContainer c)
   for (NodeContainer::Iterator i = c.Begin (); i != c.End (); ++i)
     {
       Ptr<Node> node = *i;
-      Ptr<RdmaClient> client = m_factory.Create<RdmaClient> ();
-      node->AddApplication (client);
+      Ptr<RdmaClient> client = m_factory.Create<RdmaClient> (); // RdmaClient 继承了Application
+      node->AddApplication (client); // 给节点安装应用(其中会执行应用的Start方法 Simulator::ScheduleWithContext)
       apps.Add (client);
     }
   return apps;
