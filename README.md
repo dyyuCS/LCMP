@@ -1,14 +1,14 @@
-# LCMP: Adaptive Load-aware Cost-based Multipathing for Datacenter Networks
+# LCMP: Distributed Long-Haul Cost-Aware Multi-Path Routing for Inter-Datacenter RDMA Networks
 
 This repository contains the code, scripts, and data for the paper:
 
-> **"LCMP: Adaptive Load-aware Cost-based Multipathing for Efficient Datacenter Networks"**  
+> **"LCMP: Distributed Long-Haul Cost-Aware Multi-Path Routing for Inter-Datacenter RDMA Networks"**  
 > _EuroSys 2026 (to appear)_
 
 
 ## Overview
 
-Modern datacenter fabrics rely on multipath routing to maximize resource utilization, yet classic ECMP and even bandwidth-aware UCMP fundamentally ignore real-time congestion, leading to persistent imbalance and degraded tail latency. **LCMP** (Load-aware Cost-based MultiPath) is a novel, practical datacenter multipathing design that dynamically selects paths based on both path (delay, bandwidth) and congestion costs (queue, persistence, trend), optimizing for both throughput and flow completion. Our framework is fully implemented atop NS-3 and evaluated using large-scale, realistic topologies and traffic.
+Modern datacenter fabrics rely on multipath routing to maximize resource utilization, yet classic ECMP and even bandwidth-aware UCMP fundamentally ignore real-time congestion, leading to persistent imbalance and degraded tail latency. **LCMP** (Long-Haul Cost-Aware Multi-Path) is a novel, practical datacenter multipathing design that dynamically selects paths based on both path (delay, bandwidth) and congestion costs (queue, persistence, trend), optimizing for both throughput and flow completion. Our framework is fully implemented atop NS-3 and evaluated using large-scale, realistic topologies and traffic.
 
 Key contributions:
 - A cost function that adaptively balances path and congestion signals, enabling granular differentiation even among seemingly "equal" paths
