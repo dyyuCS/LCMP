@@ -3,7 +3,7 @@
 This repository contains the code, scripts, and data for the paper:
 
 > **"LCMP: Distributed Long-Haul Cost-Aware Multi-Path Routing for Inter-Datacenter RDMA Networks"**  
-> _EuroSys 2026 (to appear)_
+> _EuroSys 2026 (accepted)_
 
 
 ## Overview
