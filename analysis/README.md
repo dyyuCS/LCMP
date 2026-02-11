@@ -40,7 +40,11 @@ Below are example command sequences for post-processing each paper experiment, d
     -o "server-output/Figure5-8DC_3routing_3traffic"
     python3 merge_fct_results.py
     -i "server-output/Figure5-8DC_3routing_3traffic" 
-    -o "server-output/Figure5-8DC_3routing_3traffic" 
+    -o "server-output/Figure5-8DC_3routing_3traffic"
+    # Plot FCT slowdown figures
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.3util/WebSearch_dcqcn_0.3util-FCTslowdown.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.5util/WebSearch_dcqcn_0.5util-FCTslowdown.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.8util/WebSearch_dcqcn_0.8util-FCTslowdown.csv
     ```
 - **Different Traffic Datasets Comparison (Robustness)**
     ```bash
@@ -49,7 +53,9 @@ Below are example command sequences for post-processing each paper experiment, d
     -o "server-output/Figure9-8DC_differDataset"
     python3 merge_fct_results.py
     -i "server-output/Figure9-8DC_differDataset" 
-    -o "server-output/Figure9-8DC_differDataset" 
+    -o "server-output/Figure9-8DC_differDataset"
+    # Plot FCT slowdown figures (batch process all CSV files in the directory)
+    python3 plot_fct_slowdown.py -d server-output/Figure9-8DC_differDataset/0.3util
     ```
 - **Different Congestion Control Comparison (Robustness)**
     ```bash
@@ -58,7 +64,9 @@ Below are example command sequences for post-processing each paper experiment, d
     -o "server-output/Figure10-8DC-differCC"
     python3 merge_fct_results.py
     -i "server-output/Figure10-8DC-differCC" 
-    -o "server-output/Figure10-8DC-differCC" 
+    -o "server-output/Figure10-8DC-differCC"
+    # Plot FCT slowdown figures (batch process all CSV files in the directory)
+    python3 plot_fct_slowdown.py -d server-output/Figure10-8DC-differCC/0.3util
     ```
 - **Ablation Study**
     ```bash
@@ -67,7 +75,9 @@ Below are example command sequences for post-processing each paper experiment, d
     -o "server-output/Figure11/ablation-study"
     python3 merge_fct_results.py
     -i "server-output/Figure11/ablation-study" 
-    -o "server-output/Figure11/ablation-study" 
+    -o "server-output/Figure11/ablation-study"
+    # Plot FCT slowdown figures
+    python3 plot_fct_slowdown.py -d server-output/Figure11/ablation-study
     ```
 - **Path Cost Component Tests**
     ```bash
@@ -76,7 +86,9 @@ Below are example command sequences for post-processing each paper experiment, d
     -o "server-output/Figure11/path-cost"
     python3 merge_fct_results.py
     -i "server-output/Figure11/path-cost" 
-    -o "server-output/Figure11/path-cost" 
+    -o "server-output/Figure11/path-cost"
+    # Plot FCT slowdown figures
+    python3 plot_fct_slowdown.py -d server-output/Figure11/path-cost
     ```
 
 - **Congestion Cost Component Tests**
@@ -86,7 +98,9 @@ Below are example command sequences for post-processing each paper experiment, d
     -o "server-output/Figure11/congestion-cost"
     python3 merge_fct_results.py
     -i "server-output/Figure11/congestion-cost" 
-    -o "server-output/Figure11/congestion-cost" 
+    -o "server-output/Figure11/congestion-cost"
+    # Plot FCT slowdown figures
+    python3 plot_fct_slowdown.py -d server-output/Figure11/congestion-cost
     ```
 
 - **Global Weight Component Tests**
@@ -96,18 +110,27 @@ Below are example command sequences for post-processing each paper experiment, d
     -o "server-output/Figure11/global-weight"
     python3 merge_fct_results.py
     -i "server-output/Figure11/global-weight" 
-    -o "server-output/Figure11/global-weight" 
+    -o "server-output/Figure11/global-weight"
+    # Plot FCT slowdown figures
+    python3 plot_fct_slowdown.py -d server-output/Figure11/global-weight
     ```
 ### Large-Scale (13 datacenters) Experiments
 
 - **Routing and Traffic Load Comparison**
     ```bash
     python3 fct_analysis_py3_batch.py 
-    -i "../simulation/mix/config/13DC-hetero/server-output/Figure-7&8-13DC_3routing_3traffic" 
-    -o "server-output/Figure-7&8-13DC_3routing_3traffic"
+    -i "../simulation/mix/config/13DC-hetero/server-output/Figure-7and8-13DC_3routing_3traffic" 
+    -o "server-output/Figure-7and8-13DC_3routing_3traffic"
     python3 merge_fct_results.py
-    -i "server-output/Figure-7&8-13DC_3routing_3traffic" 
-    -o "server-output/Figure-7&8-13DC_3routing_3traffic" 
+    -i "server-output/Figure-7and8-13DC_3routing_3traffic" 
+    -o "server-output/Figure-7and8-13DC_3routing_3traffic"
+    # Plot FCT slowdown figures
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.3util/WebSearch_dcqcn_0.3util-FCTslowdown.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.5util/WebSearch_dcqcn_0.5util-FCTslowdown.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.8util/WebSearch_dcqcn_0.8util-FCTslowdown.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.3util/WebSearch_dcqcn_0.3util-FCTslowdown-DC1-DC13.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.5util/WebSearch_dcqcn_0.5util-FCTslowdown-DC1-DC13.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.8util/WebSearch_dcqcn_0.8util-FCTslowdown-DC1-DC13.csv
     ```
 
 Refer to each script's `-h` option for detailed usage and options for batch processing.
