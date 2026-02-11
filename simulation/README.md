@@ -100,7 +100,7 @@ Experiments in the paper are organized into two categories:
   - Routing and Traffic Load Comparison:
     ```bash
     python3 server_simulation_batch_for13DC.py
-    -o "server-output/Figure-7&8-13DC_3routing_3traffic"
+    -o "server-output/Figure-7and8-13DC_3routing_3traffic"
     ```
 
 ## Notes
