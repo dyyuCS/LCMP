@@ -98,6 +98,25 @@ We provide analysis scripts under `analysis/` to analyze the fct-slowdown and li
 Refer to the README.md under it for more details.
 
 
+## Reproducing Experiments
+
+For convenience, we provide automated shell scripts in the `scripts/` folder that execute the complete workflow (simulation, analysis, and visualization) for each experiment presented in the paper. Each script handles the entire pipeline automatically, from running simulations to generating plots.
+
+To reproduce all experiments:
+```bash
+cd scripts
+bash run_all.sh
+```
+
+To reproduce a specific experiment (e.g., Figure 5):
+```bash
+cd scripts
+bash run_figure5.sh
+```
+
+See `scripts/README.md` for detailed information about available scripts and their usage.
+
+
 
 ## License
 
