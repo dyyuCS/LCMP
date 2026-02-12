@@ -17,8 +17,6 @@ Key contributions:
 
 We describe how to run this repository using your local machine with `ubuntu:22.04`. 
 
-> [!NOTE]
-> The manuscript for this project is currently **_<u>under review</u>_** and will be made publicly available upon the acceptance of the paper. Please check back after the review process is complete, or contact the corresponding author for any inquiries.
 
 ## Environment Setup
 
