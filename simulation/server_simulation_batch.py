@@ -47,16 +47,16 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     output_dir = args.output
-    CONFIG_PATH = 'mix/config/8DC-hetero-onlyDC1-8/config_batch.txt'
-    UTIL_LIST = ['0.3util']
-    # UTIL_LIST = ['0.3util', '0.5util', '0.8util']
+    CONFIG_PATH = 'mix/config/8DC-hetero/config_batch.txt'
+    # UTIL_LIST = ['0.3util']
+    UTIL_LIST = ['0.3util', '0.5util', '0.8util']
 
     # DATASET = ['AliStorage', 'GoogleRPC']
     DATASET = ['WebSearch']
 
     # for routing_mode in ['2']:  # 0: ECMP, 1: UCMP, 2: Ours
     # for routing_mode in ['0', '2']:  # 0: ECMP, 1: UCMP, 2: Ours
-    # for routing_mode in ['0', '1', '2']:  # 0: ECMP, 1: UCMP, 2: Ours
+    for routing_mode in ['0', '1', '2']:  # 0: ECMP, 1: UCMP, 2: Ours
         for x_util in UTIL_LIST:
             for cc_mode in ['3', '7', '8']: # CC_MODE 1: DCQCN, 3: HPCC, 7: TIMELY, 8: DCTCP, 10: HPCC-PINT}
             # for cc_mode in [ '1']: # CC_MODE 1: DCQCN, 3: HPCC, 7: TIMELY, 8: DCTCP, 10: HPCC-PINT}

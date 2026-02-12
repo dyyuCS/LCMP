@@ -27,7 +27,7 @@ def modify_config(config_path, output_dir, routing_mode, x_util, cc_mode, datase
         elif line.strip().startswith('FLOW_FILE'):
             new_lines.append('FLOW_FILE ${WORKING_DIR}traffic_%s_8DC_forDC1And8-%s.txt\n' % (dataset, x_util))
         elif line.strip().startswith('TOPOLOGY_FILE'):
-            new_lines.append('TOPOLOGY_FILE ${WORKING_DIR}topology_LeafSpine_MultiDC8-posCor.txt\n')
+            new_lines.append('TOPOLOGY_FILE ${WORKING_DIR}topology_LeafSpine_MultiDC8.txt\n')
         elif line.strip().startswith('WORKING_DIR'):
             new_lines.append('WORKING_DIR {}/\n'.format(base_dir))
         else:
@@ -43,7 +43,7 @@ def run_simulation(config_path):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('-o', dest='output', action='store', default='server-output/output-8DC-hetero-posCor-DCQCN', help="output file")
+    parser.add_argument('-o', dest='output', action='store', default='server-output/Figure10-output-8DC_differCC', help="output file")
     args = parser.parse_args()
 
     output_dir = args.output

@@ -31,7 +31,7 @@ def modify_config(config_path, output_dir, routing_mode, x_util, cc_mode, datase
             new_lines.append(flow_file_line)
         elif line.strip().startswith('TOPOLOGY_FILE'):
             # 【修改点2】移除 f 前缀，因为这里没有变量，只是一个普通字符串
-            new_lines.append('TOPOLOGY_FILE ${WORKING_DIR}topology_LeafSpine_MultiDC13-posCor.txt\n')
+            new_lines.append('TOPOLOGY_FILE ${WORKING_DIR}topology_LeafSpine_MultiDC13.txt\n')
         elif line.strip().startswith('WORKING_DIR'):
             new_lines.append('WORKING_DIR {}/\n'.format(base_dir))
         else:
@@ -52,9 +52,9 @@ if __name__ == '__main__':
 
     output_dir = args.output
     CONFIG_PATH = 'mix/config/13DC-hetero-onlyDC1-13/config_batch.txt'
-    UTIL_LIST = ['0.3util']
+    # UTIL_LIST = ['0.3util']
     # UTIL_LIST = [ '0.5util', '0.8util']
-    # UTIL_LIST = ['0.3util', '0.5util', '0.8util']
+    UTIL_LIST = ['0.3util', '0.5util', '0.8util']
 
     # DATASET = ['AliStorage', 'GoogleRPC']
     DATASET = ['WebSearch']

@@ -19,11 +19,11 @@ def modify_config(config_path, output_dir, routing_mode, x_util, cc_mode, datase
         elif line.strip().startswith('OUTPUT_DIR'):
             if routing_mode == '0':
                 # 使用 str.format() 进行字符串拼接
-                new_dir = '{}/{}/output-13DC-hetero-onlyDC1-13-posCor/{}/{}/ECMP/'.format(base_dir, output_dir, dataset, x_util)
+                new_dir = '{}/{}/Figure-7and8-13DC_3routing_3traffic/{}/{}/ECMP/'.format(base_dir, output_dir, dataset, x_util)
             elif routing_mode == '1':
-                new_dir = '{}/{}/output-13DC-hetero-onlyDC1-13-posCor/{}/{}/UCMP/'.format(base_dir, output_dir, dataset, x_util)
+                new_dir = '{}/{}/Figure-7and8-13DC_3routing_3traffic/{}/{}/UCMP/'.format(base_dir, output_dir, dataset, x_util)
             elif routing_mode == '2':
-                new_dir = '{}/{}/output-13DC-hetero-onlyDC1-13-posCor/{}/{}/Ours/'.format(base_dir, output_dir, dataset, x_util)
+                new_dir = '{}/{}/Figure-7and8-13DC_3routing_3traffic/{}/{}/Ours/'.format(base_dir, output_dir, dataset, x_util)
             new_lines.append('OUTPUT_DIR {}\n'.format(new_dir))
         elif line.strip().startswith('FLOW_FILE'):
             # 【修改点1】使用 str.format() 替代 f-string
@@ -31,7 +31,7 @@ def modify_config(config_path, output_dir, routing_mode, x_util, cc_mode, datase
             new_lines.append(flow_file_line)
         elif line.strip().startswith('TOPOLOGY_FILE'):
             # 【修改点2】移除 f 前缀，因为这里没有变量，只是一个普通字符串
-            new_lines.append('TOPOLOGY_FILE ${WORKING_DIR}topology_LeafSpine_MultiDC13-posCor.txt\n')
+            new_lines.append('TOPOLOGY_FILE ${WORKING_DIR}topology_LeafSpine_MultiDC13.txt\n')
         elif line.strip().startswith('WORKING_DIR'):
             new_lines.append('WORKING_DIR {}/\n'.format(base_dir))
         else:
@@ -51,10 +51,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     output_dir = args.output
-    CONFIG_PATH = 'mix/config/13DC-hetero-onlyDC1-13/config_batch.txt'
-    UTIL_LIST = ['0.3util']
+    CONFIG_PATH = 'mix/config/13DC-hetero/config_batch.txt'
+    # UTIL_LIST = ['0.3util']
     # UTIL_LIST = [ '0.5util', '0.8util']
-    # UTIL_LIST = ['0.3util', '0.5util', '0.8util']
+    UTIL_LIST = ['0.3util', '0.5util', '0.8util']
 
     # DATASET = ['AliStorage', 'GoogleRPC']
     DATASET = ['WebSearch']

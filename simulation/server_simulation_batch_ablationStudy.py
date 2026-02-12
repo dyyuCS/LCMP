@@ -25,7 +25,7 @@ def modify_config(config_path, output_dir_base, topology, alpha, beta):
         # General config
         'ROUTING_MODE': 2,
         'CC_MODE': 1,
-        'OUTPUT_DIR': '{}/{}/output-8DC-hetero-onlyDC1-8-{}-DCQCN/alpha={}-beta={}/'.format(base_dir, output_dir_base, topology_variant, alpha, beta),
+        'OUTPUT_DIR': '{}/Figure11/{}/output-8DC-hetero-onlyDC1-8-{}-DCQCN/alpha={}-beta={}/'.format(base_dir, output_dir_base, topology_variant, alpha, beta),
         'FLOW_FILE': '${WORKING_DIR}traffic_WebSearch_8DC_forDC1And8-0.3util.txt',
         'TOPOLOGY_FILE': '${{WORKING_DIR}}{}.txt'.format(topology),
         'WORKING_DIR': '{}/'.format(base_dir),
@@ -63,9 +63,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     output_dir_base = args.output
-    CONFIG_PATH = 'mix/config/8DC-hetero-onlyDC1-8/config_batch.txt'
+    CONFIG_PATH = 'mix/config/8DC-hetero/config_batch.txt'
     
-    TOPOLOGIES = ['topology_LeafSpine_MultiDC8-negCor' ]
+    TOPOLOGIES = ['topology_LeafSpine_MultiDC8' ]
                 #    , 'topology_LeafSpine_MultiDC8-posCor']
     # PARAM_CONFIGS = [{'alpha': 0, 'beta': 4} , {'alpha': 4, 'beta': 0}]
     PARAM_CONFIGS = [{'alpha': 4, 'beta': 0}]      

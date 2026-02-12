@@ -65,8 +65,7 @@ if __name__ == '__main__':
     output_dir_base = args.output
     CONFIG_PATH = 'mix/config/8DC-hetero-onlyDC1-8/config_batch.txt'
     
-    # TOPOLOGIES = ['topology_LeafSpine_MultiDC8-posCor']
-    TOPOLOGIES = ['topology_LeafSpine_MultiDC8-posCor', 'topology_LeafSpine_MultiDC8-negCor']
+    TOPOLOGIES = ['topology_LeafSpine_MultiDC8']
     PARAM_CONFIGS = [{'w_dl': 3, 'w_bw': 1}, {'w_dl': 2, 'w_bw': 2}, {'w_dl': 1, 'w_bw': 3}]
     # PARAM_CONFIGS = [{'w_dl': 1, 'w_bw': 3}]
 

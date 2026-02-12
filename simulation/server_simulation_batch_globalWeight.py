@@ -63,9 +63,9 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     output_dir_base = args.output
-    CONFIG_PATH = 'mix/config/8DC-hetero-onlyDC1-8/config_batch.txt'
+    CONFIG_PATH = 'mix/config/8DC-hetero/config_batch.txt'
     
-    TOPOLOGIES = ['topology_LeafSpine_MultiDC8-posCor', 'topology_LeafSpine_MultiDC8-negCor']
+    TOPOLOGIES = ['topology_LeafSpine_MultiDC8']
     PARAM_CONFIGS = [{'alpha': 3, 'beta': 1}, 
                      {'alpha': 2, 'beta': 2}, 
                      {'alpha': 1, 'beta': 3}]
