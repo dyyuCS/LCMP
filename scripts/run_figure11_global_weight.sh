@@ -11,7 +11,7 @@ echo "=========================================="
 echo "[1/4] Running simulation..."
 cd ../simulation
 python3 server_simulation_batch_globalWeight.py \
-    -o "mix/config/8DC-hetero/server-output/Figure11/global-weight"
+    -o "server-output/Figure11/global-weight"
 
 # Step 2: Analyze FCT
 echo "[2/4] Analyzing FCT..."

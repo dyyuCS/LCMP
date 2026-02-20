@@ -11,7 +11,7 @@ echo "=========================================="
 echo "[1/4] Running simulation..."
 cd ../simulation
 python3 server_simulation_batch_congestionCost.py \
-    -o "mix/config/8DC-hetero/server-output/Figure11/congestion-cost"
+    -o "server-output/Figure11/congestion-cost"
 
 # Step 2: Analyze FCT
 echo "[2/4] Analyzing FCT..."

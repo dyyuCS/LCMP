@@ -11,7 +11,7 @@ echo "=========================================="
 echo "[1/4] Running simulation..."
 cd ../simulation
 python3 server_simulation_batch_for13DC.py \
-    -o "mix/config/13DC-hetero/server-output/Figure-7and8-13DC_3routing_3traffic"
+    -o "server-output/Figure-7and8-13DC_3routing_3traffic"
 
 # Step 2: Analyze FCT
 echo "[2/4] Analyzing FCT..."

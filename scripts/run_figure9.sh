@@ -11,7 +11,7 @@ echo "=========================================="
 echo "[1/4] Running simulation..."
 cd ../simulation
 python3 server_simulation_batch_8DC_differDataset.py \
-    -o "mix/config/8DC-hetero/server-output/Figure9-8DC_differDataset"
+    -o "server-output/Figure9-8DC_differDataset"
 
 # Step 2: Analyze FCT
 echo "[2/4] Analyzing FCT..."
