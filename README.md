@@ -17,30 +17,63 @@ Key contributions:
 
 We describe how to run this repository using your local machine with `ubuntu:22.04`. 
 
-
 ## Environment Setup
 
-This project requires a legacy C++ toolchain (gcc/g++ 5.x), older system libraries, and Python 2.x to ensure compatibility with NS-3.17 and its modules. Follow the steps below to set up your environment on Ubuntu 22.04:
+This project requires a legacy C++ toolchain (gcc/g++ 5.x), older system libraries, and Python 2.x to ensure compatibility with NS-3.17 and its modules. We provide two methods to set up your environment: using Docker (highly recommended) or a bare-metal installation on Ubuntu 22.04.
 
-### 1. Install Required Packages
+### Method 1: Run via Docker (Recommended)
+
+To avoid modifying your host operating system and resolve legacy dependency conflicts, we strongly recommend using Docker to run the NS-3 simulation. We have provided a `Dockerfile` that encapsulates the exact environment needed.
+
+**1. Build the Docker image:** Build the image using the provided `Dockerfile`. The `--platform linux/amd64` flag ensures architecture compatibility, which is especially important if you are building on an ARM-based machine (e.g., Apple Silicon Mac).
+
 ```bash
-sudo apt update
-sudo apt install -y build-essential gcc g++ mercurial \
-    libsqlite3-dev libxml2-dev libgtk2.0-0 libgtk2.0-dev uncrustify python2-dev python2 \
-    cmake libboost-all-dev git
+docker build --platform linux/amd64 -f Dockerfile -t lcmp-img:amd64 .
 ```
 
-### 2. Link the `python2` binary
-This project depends on Python 2.x. Some scripts or build steps require Python to point to python2:
+**2. Run the container in the background:** Start the container in detached mode (`-d`). This command mounts your current repository directory into `/root` inside the container and automatically configures the `waf` build system for the NS-3 simulation.
+
+```bash
+docker run -itd --name lcmp-sim -v $(pwd):/root lcmp-img:amd64 bash -c "cd simulation/; chmod +x waf; ./waf configure; cd ~; exec bash"
+```
+
+**3. Enter the running container:** Use `docker exec` to access the interactive bash shell of the running container. Once inside, you can seamlessly run the simulation and analysis scripts.
+
+```bash
+docker exec -it lcmp-sim bash
+```
+
+**4. Exit the container:** When you are finished with your experiments, you can safely exit the container shell. (Note: The container will remain running in the background until you explicitly stop it using `docker stop lcmp-sim`).
+
+```bash
+exit
+```
+
+### Method 2: Bare-metal Installation on Ubuntu 22.04
+
+If you prefer to run the simulation directly on your host machine, follow the steps below to set up your environment on Ubuntu 22.04:
+
+**1. Install Required Packages**
+
+```bash
+sudo apt update
+
+sudo apt install -y build-essential gcc g++ mercurial libsqlite3-dev libxml2-dev libgtk2.0-0 libgtk2.0-dev uncrustify python2-dev python2 gnupg python3-pip cmake libboost-all-dev git
+
+pip3 install pandas matplotlib
+```
+
+**2. Link the python binary** This project depends on Python 2.x. Some scripts or build steps require Python to point to python2:
+
 ```bash
 sudo ln -sf /usr/bin/python2 /usr/bin/python
 ```
 
-### 3. Install Legacy GCC/G++ 5.x  
-Ubuntu 22.04 does not include GCC 5 in the official repos. Add the Ubuntu Xenial repository temporarily to obtain these older compilers:
+**3. Install Legacy GCC/G++ 5.x** Ubuntu 22.04 does not include GCC 5 in the official repos. Add the Ubuntu Xenial repository temporarily to obtain these older compilers:
+
 - Open apt sources list:
 ```bash
-sudo nano /etc/apt/sources.list
+sudo vim /etc/apt/sources.list
 ```
 - Add these lines at the end, then save and exit:
 ```
@@ -54,7 +87,7 @@ sudo apt update
 ```
 - Install GCC/G++ 5:
 ```bash
-sudo apt install gcc-5 g++-5
+sudo apt install -y gcc-5 g++-5
 ```
 - Verify the version:
 ```bash
@@ -68,7 +101,7 @@ deb ... xenial main
 sudo apt update
 ```
 
-### 4. Manage and Set Compiler Alternatives
+#### 4. Manage and Set Compiler Alternatives
 Set gcc and g++ to use the 5.x versions via update-alternatives:
 ```bash
 sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 50
@@ -81,12 +114,18 @@ g++ --version
 # Both should report 5.x.x as the active version
 ```
 
+---
+
+
+
 ## NS-3 simulation
+
 The ns-3 simulation is under `simulation/`. Refer to the README.md under it for more details.
 
 
 
 ## Traffic generator
+
 The traffic generator is under `traffic_gen/`. Refer to the README.md under it for more details.
 
 
@@ -94,6 +133,8 @@ The traffic generator is under `traffic_gen/`. Refer to the README.md under it f
 ## Analysis
 We provide analysis scripts under `analysis/` to analyze the fct-slowdown and link-utilization of different algorithms.
 Refer to the README.md under it for more details.
+
+
 
 
 ## Reproducing Experiments
