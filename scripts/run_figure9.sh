@@ -16,19 +16,34 @@ python3 server_simulation_batch_8DC_differDataset.py \
 # Step 2: Analyze FCT
 echo "[2/4] Analyzing FCT..."
 cd ../analysis
-python3 fct_analysis_py3_batch.py \
-    -i "../simulation/mix/config/8DC-hetero/server-output/Figure9-8DC_differDataset" \
-    -o "server-output/Figure9-8DC_differDataset"
+python3 fct_analysis_py3_batch_differDataset.py \
+    -i "../simulation/mix/config/8DC-hetero/server-output/Figure9-8DC_differDataset/WebSearch" \
+    -o "server-output/Figure9-8DC_differDataset/WebSearch"
+python3 fct_analysis_py3_batch_differDataset.py \
+    -i "../simulation/mix/config/8DC-hetero/server-output/Figure9-8DC_differDataset/FbHdp" \
+    -o "server-output/Figure9-8DC_differDataset/FbHdp"
+python3 fct_analysis_py3_batch_differDataset.py \
+    -i "../simulation/mix/config/8DC-hetero/server-output/Figure9-8DC_differDataset/AliStorage" \
+    -o "server-output/Figure9-8DC_differDataset/AliStorage"
 
 # Step 3: Merge results
 echo "[3/4] Merging results..."
-python3 merge_fct_results.py \
-    -i "server-output/Figure9-8DC_differDataset" \
-    -o "server-output/Figure9-8DC_differDataset"
+python3 merge_fct_results_differDataset.py \
+    -i "server-output/Figure9-8DC_differDataset/WebSearch" \
+    -o "server-output/Figure9-8DC_differDataset/WebSearch"
+python3 merge_fct_results_differDataset.py \
+    -i "server-output/Figure9-8DC_differDataset/FbHdp" \
+    -o "server-output/Figure9-8DC_differDataset/FbHdp"
+python3 merge_fct_results_differDataset.py \
+    -i "server-output/Figure9-8DC_differDataset/AliStorage" \
+    -o "server-output/Figure9-8DC_differDataset/AliStorage"
 
 # Step 4: Plot FCT slowdown
 echo "[4/4] Plotting FCT slowdown..."
-python3 plot_fct_slowdown.py -d server-output/Figure9-8DC_differDataset/0.3util
+python3 plot_fct_slowdown.py -d server-output/Figure9-8DC_differDataset/WebSearch
+python3 plot_fct_slowdown.py -d server-output/Figure9-8DC_differDataset/FbHdp
+python3 plot_fct_slowdown.py -d server-output/Figure9-8DC_differDataset/AliStorage
+
 
 echo "=========================================="
 echo "Figure 9 completed successfully!"
