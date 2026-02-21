@@ -8,21 +8,7 @@ PACKET_PAYLOAD_SIZE 1000
 
 ENABLE_TRACE 0
 WORKING_DIR mix/config/8DC-hetero/
-OUTPUT_DIR mix/config/8DC-hetero/server-output/Figure1-posCor_8DC_original_flow_linkUtil/WebSearch/0.3util/Ours/
-
-
-
-
-
-\
-/WebSearch/0.3util/UCMP/
-
-
-
-
-
-\
-/WebSearch/0.3util/Ours/
+OUTPUT_DIR mix/config/8DC-hetero/server-output/Figure1-posCor_8DC_original_flow_linkUtil/WebSearch/0.3util/ECMP/
 
 TOPOLOGY_FILE ${WORKING_DIR}topology_LeafSpine_MultiDC8.txt
 FLOW_FILE ${WORKING_DIR}traffic_WebSearch_8DC_forDC1And8-0.3util.txt
