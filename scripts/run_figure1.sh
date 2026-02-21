@@ -11,13 +11,13 @@ echo "=========================================="
 echo "[1/3] Running simulation..."
 cd ../simulation
 python3 server_simulation_batch_8DC_linkUtil.py \
-    -o "server-output/Figure1-8DC_linkUtil"
+    -o "server-output/Figure1-8DC_linkUtil/link-util"
 
 # Step 2: Analyze FCT
 echo "[2/3] Analyzing FCT..."
 cd ../analysis
 python3 fct_analysis_py3_batch.py \
-    -i "../simulation/mix/config/8DC-hetero/server-output/Figure1-8DC_linkUtil" \
+    -i "../simulation/mix/config/8DC-hetero/server-output/Figure1-8DC_linkUtil/link-util" \
     -o "server-output/Figure1-8DC_linkUtil"
 
 # Step 3: Plot link utilization

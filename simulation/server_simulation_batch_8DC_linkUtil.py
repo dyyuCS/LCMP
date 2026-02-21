@@ -18,11 +18,11 @@ def modify_config(config_path, output_dir, routing_mode, x_util, cc_mode, datase
             new_lines.append('CC_MODE {}\n'.format(cc_mode))
         elif line.strip().startswith('OUTPUT_DIR'):
             if routing_mode == '0':
-                new_dir = '{}/{}/link-util/{}/ECMP/'.format(base_dir, output_dir, x_util)
+                new_dir = '{}/{}/{}/ECMP/'.format(base_dir, output_dir, x_util)
             elif routing_mode == '1':
-                new_dir = '{}/{}/link-util/{}/UCMP/'.format(base_dir, output_dir, x_util)
+                new_dir = '{}/{}/{}/UCMP/'.format(base_dir, output_dir, x_util)
             elif routing_mode == '2':
-                new_dir = '{}/{}/link-util/{}/Ours/'.format(base_dir, output_dir, x_util)
+                new_dir = '{}/{}/{}/Ours/'.format(base_dir, output_dir, x_util)
             new_lines.append('OUTPUT_DIR {}\n'.format(new_dir))
         elif line.strip().startswith('FLOW_FILE'):
             new_lines.append('FLOW_FILE ${{WORKING_DIR}}traffic_{}_8DC_forDC1And8-{}.txt\n'.format(dataset, x_util))
