@@ -32,8 +32,8 @@ if __name__=="__main__":
 	]
 	UTILs = [
 		'0.3util',
-		# '0.5util',
-		# '0.8util'
+		'0.5util',
+		'0.8util'
 	]
 	ROUTINGs = [
 		"Ours",
@@ -56,6 +56,8 @@ if __name__=="__main__":
 				inputPath_abs = os.path.join(os.path.dirname(current_file_path), args.inputPath)
 				fileName = f'{util}/{routing}/fct_{cc}.txt'
 				file = f'{inputPath_abs}/{fileName}'
+				
+				print(f"File path: {file}")
 
 				if not os.path.exists(file):
 					print(f"File not found: {file}")
