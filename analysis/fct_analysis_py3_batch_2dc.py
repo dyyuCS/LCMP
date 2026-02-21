@@ -121,7 +121,7 @@ if __name__ == "__main__":
 					file_rel = f"{dataset}/{util}/{routing}/fct_{cc}.txt"
 					file_path = f"{input_root}/{file_rel}"
 					if not os.path.exists(file_path):
-						print(f"File not found: {file_rel}")
+						print(f"File not found: {file_path}")
 						exit()
 					cmd = build_awk_cmd(file_path, flow_type, time_limit, a_range, b_range)
 					output = subprocess.check_output(cmd, shell=True)
@@ -130,7 +130,7 @@ if __name__ == "__main__":
 					a = output.split('\n')[:-2]
 					n = len(a)
 					if n == 0:
-						print(f"No matching 2DC records after filtering: {file_rel}")
+						print(f"No matching 2DC records after filtering: {file_path}")
 						exit(1)
 					for i in range(0, 100, step):
 						l = i * n // 100

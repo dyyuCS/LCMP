@@ -56,9 +56,9 @@ if __name__=="__main__":
 				inputPath_abs = os.path.join(os.path.dirname(current_file_path), args.inputPath)
 				fileName = f'{util}/{routing}/fct_{cc}.txt'
 				file = f'{inputPath_abs}/{fileName}'
-				# print("===: ", file)
+
 				if not os.path.exists(file):
-					print(f"File not found: {fileName}")
+					print(f"File not found: {file}")
 					exit()
 
 				if type == 0:
