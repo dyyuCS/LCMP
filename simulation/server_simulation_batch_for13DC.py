@@ -53,7 +53,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     output_dir = args.output
-    CONFIG_PATH = 'mix/config/13DC-hetero-onlyDC1-13/config_batch.txt'
+    CONFIG_PATH = 'mix/config/13DC-hetero/config_batch.txt'
     # UTIL_LIST = ['0.3util']
     # UTIL_LIST = [ '0.5util', '0.8util']
     UTIL_LIST = ['0.3util', '0.5util', '0.8util']
