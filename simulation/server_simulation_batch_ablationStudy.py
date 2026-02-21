@@ -64,8 +64,8 @@ if __name__ == '__main__':
     
     TOPOLOGIES = ['topology_LeafSpine_MultiDC8' ]
                 #    , 'topology_LeafSpine_MultiDC8-posCor']
-    # PARAM_CONFIGS = [{'alpha': 0, 'beta': 4} , {'alpha': 4, 'beta': 0}]
-    PARAM_CONFIGS = [{'alpha': 4, 'beta': 0}]      
+    PARAM_CONFIGS = [{'alpha': 0, 'beta': 4} , {'alpha': 4, 'beta': 0}]
+    # PARAM_CONFIGS = [{'alpha': 4, 'beta': 0}]      
 
     for topology in TOPOLOGIES:
         for params in PARAM_CONFIGS:
