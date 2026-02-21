@@ -30,6 +30,8 @@ def modify_config(config_path, output_dir, routing_mode, x_util, cc_mode, datase
             new_lines.append('TOPOLOGY_FILE ${WORKING_DIR}topology_LeafSpine_MultiDC8.txt\n')
         elif line.strip().startswith('WORKING_DIR'):
             new_lines.append('WORKING_DIR {}/\n'.format(base_dir))
+        elif line.strip().startswith('ENABLE_LINK_UTIL_RECORD'):
+            new_lines.append('ENABLE_LINK_UTIL_RECORD 1\n')
         else:
             new_lines.append(line)
 

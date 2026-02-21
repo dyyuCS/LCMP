@@ -11,8 +11,6 @@ def modify_config(config_path, output_dir_base, topology, alpha, beta):
     # config_path的父目录
     base_dir = os.path.dirname(config_path)
     
-    # 从topology文件名中提取posCor或negCor
-    topology_variant = "posCor" if "posCor" in topology else "negCor"
 
     params = {
         # Experiment parameters
@@ -25,7 +23,7 @@ def modify_config(config_path, output_dir_base, topology, alpha, beta):
         # General config
         'ROUTING_MODE': 2,
         'CC_MODE': 1,
-        'OUTPUT_DIR': '{}/{}/output-8DC-hetero-onlyDC1-8-{}-DCQCN/alpha={}-beta={}/'.format(base_dir, output_dir_base, topology_variant, alpha, beta),
+        'OUTPUT_DIR': '{}/Figure11/{}/output-8DC-hetero-onlyDC1-8-DCQCN/alpha={}-beta={}/'.format(base_dir, output_dir_base, alpha, beta),
         'FLOW_FILE': '${WORKING_DIR}traffic_WebSearch_8DC_forDC1And8-0.3util.txt',
         'TOPOLOGY_FILE': '${{WORKING_DIR}}{}.txt'.format(topology),
         'WORKING_DIR': '{}/'.format(base_dir),

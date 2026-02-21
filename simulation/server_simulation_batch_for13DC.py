@@ -19,11 +19,11 @@ def modify_config(config_path, output_dir, routing_mode, x_util, cc_mode, datase
         elif line.strip().startswith('OUTPUT_DIR'):
             if routing_mode == '0':
                 # 使用 str.format() 进行字符串拼接
-                new_dir = '{}/{}/output-13DC-hetero-posCor/{}/{}/ECMP/'.format(base_dir, output_dir, dataset, x_util)
+                new_dir = '{}/{}/{}/{}/ECMP/'.format(base_dir, output_dir, dataset, x_util)
             elif routing_mode == '1':
-                new_dir = '{}/{}/output-13DC-hetero-posCor/{}/{}/UCMP/'.format(base_dir, output_dir, dataset, x_util)
+                new_dir = '{}/{}/{}/{}/UCMP/'.format(base_dir, output_dir, dataset, x_util)
             elif routing_mode == '2':
-                new_dir = '{}/{}/output-13DC-hetero-posCor/{}/{}/Ours/'.format(base_dir, output_dir, dataset, x_util)
+                new_dir = '{}/{}/{}/{}/Ours/'.format(base_dir, output_dir, dataset, x_util)
             new_lines.append('OUTPUT_DIR {}\n'.format(new_dir))
         elif line.strip().startswith('FLOW_FILE'):
             # 【修改点1】使用 str.format() 替代 f-string
@@ -34,6 +34,8 @@ def modify_config(config_path, output_dir, routing_mode, x_util, cc_mode, datase
             new_lines.append('TOPOLOGY_FILE ${WORKING_DIR}topology_LeafSpine_MultiDC13.txt\n')
         elif line.strip().startswith('WORKING_DIR'):
             new_lines.append('WORKING_DIR {}/\n'.format(base_dir))
+        elif line.strip().startswith('ENABLE_LINK_UTIL_RECORD'):
+            new_lines.append('ENABLE_LINK_UTIL_RECORD 0\n')
         else:
             new_lines.append(line)
 
