@@ -28,9 +28,9 @@ python3 merge_fct_results.py \
 
 # Step 4: Plot FCT slowdown
 echo "[4/4] Plotting FCT slowdown..."
-python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.3util/merged_0.3util-FCTslowdown.csv
-python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.5util/merged_0.5util-FCTslowdown.csv
-python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.8util/merged_0.8util-FCTslowdown.csv
+python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/merged_0.3util-FCTslowdown.csv
+python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/merged_0.5util-FCTslowdown.csv
+python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/merged_0.8util-FCTslowdown.csv
 
 echo "=========================================="
 echo "Figure 5 completed successfully!"
