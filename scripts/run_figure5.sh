@@ -17,7 +17,7 @@ python3 server_simulation_batch_8DC.py \
 echo "[2/4] Analyzing FCT..."
 cd ../analysis
 python3 fct_analysis_py3_batch.py \
-    -i "../simulation/mix/config/8DC-hetero/server-output/Figure5-8DC_3routing_3traffic" \
+    -i "../simulation/mix/config/8DC-hetero/server-output/Figure5-8DC_3routing_3traffic/WebSearch" \
     -o "server-output/Figure5-8DC_3routing_3traffic"
 
 # Step 3: Merge results
@@ -28,9 +28,9 @@ python3 merge_fct_results.py \
 
 # Step 4: Plot FCT slowdown
 echo "[4/4] Plotting FCT slowdown..."
-python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.3util/WebSearch_dcqcn_0.3util-FCTslowdown.csv
-python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.5util/WebSearch_dcqcn_0.5util-FCTslowdown.csv
-python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.8util/WebSearch_dcqcn_0.8util-FCTslowdown.csv
+python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.3util/merged_0.3util-FCTslowdown.csv
+python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.5util/merged_0.5util-FCTslowdown.csv
+python3 plot_fct_slowdown.py -m single -i server-output/Figure5-8DC_3routing_3traffic/0.8util/merged_0.8util-FCTslowdown.csv
 
 echo "=========================================="
 echo "Figure 5 completed successfully!"
