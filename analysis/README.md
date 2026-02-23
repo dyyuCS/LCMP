@@ -119,18 +119,26 @@ Below are example command sequences for post-processing each paper experiment, d
 - **Routing and Traffic Load Comparison**
     ```bash
     python3 fct_analysis_py3_batch.py 
-    -i "../simulation/mix/config/13DC-hetero/server-output/Figure-7and8-13DC_3routing_3traffic" 
-    -o "server-output/Figure-7and8-13DC_3routing_3traffic"
+    -i "../simulation/mix/config/13DC-hetero/server-output/Figure-7-13DC_3routing_3traffic" 
+    -o "server-output/Figure-7-13DC_3routing_3traffic"
     python3 merge_fct_results.py
-    -i "server-output/Figure-7and8-13DC_3routing_3traffic" 
-    -o "server-output/Figure-7and8-13DC_3routing_3traffic"
+    -i "server-output/Figure-7-13DC_3routing_3traffic" 
+    -o "server-output/Figure-7-13DC_3routing_3traffic"
     # Plot FCT slowdown figures
-    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.3util/WebSearch_dcqcn_0.3util-FCTslowdown.csv
-    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.5util/WebSearch_dcqcn_0.5util-FCTslowdown.csv
-    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.8util/WebSearch_dcqcn_0.8util-FCTslowdown.csv
-    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.3util/WebSearch_dcqcn_0.3util-FCTslowdown-DC1-DC13.csv
-    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.5util/WebSearch_dcqcn_0.5util-FCTslowdown-DC1-DC13.csv
-    python3 plot_fct_slowdown.py -m single -i server-output/Figure7and8-13DC_3routing_3traffic/0.8util/WebSearch_dcqcn_0.8util-FCTslowdown-DC1-DC13.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure7-13DC_3routing_3traffic/0.3util/WebSearch_dcqcn_0.3util-FCTslowdown.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure7-13DC_3routing_3traffic/0.5util/WebSearch_dcqcn_0.5util-FCTslowdown.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure7-13DC_3routing_3traffic/0.8util/WebSearch_dcqcn_0.8util-FCTslowdown.csv
+    
+    python3 fct_analysis_py3_batch.py 
+    -i "../simulation/mix/config/13DC-hetero/server-output/Figure-8-13DC_onlyDC1-13_3routing_3traffic" 
+    -o "server-output/Figure-8-13DC_onlyDC1-13_3routing_3traffic"
+    python3 merge_fct_results.py
+    -i "server-output/Figure-8-13DC_onlyDC1-13_3routing_3traffic" 
+    -o "server-output/Figure-8-13DC_onlyDC1-13_3routing_3traffic"
+    # Plot FCT slowdown figures
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure8-13DC_onlyDC1-13_3routing_3traffic/0.3util/WebSearch_dcqcn_0.3util-FCTslowdown.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure8-13DC_onlyDC1-13_3routing_3traffic/0.5util/WebSearch_dcqcn_0.5util-FCTslowdown.csv
+    python3 plot_fct_slowdown.py -m single -i server-output/Figure8-13DC_onlyDC1-13_3routing_3traffic/0.8util/WebSearch_dcqcn_0.8util-FCTslowdown.csv
     ```
 
 Refer to each script's `-h` option for detailed usage and options for batch processing.

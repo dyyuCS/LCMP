@@ -26,7 +26,8 @@ echo ""
 echo "Starting Large-Scale (13DC) Experiments..."
 echo ""
 
-bash run_figure7_8.sh
+bash run_figure7.sh
+bash run_figure8.sh
 
 echo ""
 echo "=========================================="

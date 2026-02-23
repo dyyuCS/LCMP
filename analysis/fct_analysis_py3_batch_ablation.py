@@ -31,9 +31,10 @@ if __name__=="__main__":
 		# 'dctcp',
 	]
 	UTILs = [
-		'0.3util',
+		# '0.3util',
 		# '0.5util',
 		# '0.8util'
+		'output-8DC-hetero-onlyDC1-8-DCQCN'
 	]
 
 	ABLATIONS = [

@@ -16,19 +16,20 @@ python3 server_simulation_batch_globalWeight.py \
 # Step 2: Analyze FCT
 echo "[2/4] Analyzing FCT..."
 cd ../analysis
-python3 fct_analysis_py3_batch.py \
+python3 fct_analysis_py3_batch_globalWeight.py \
     -i "../simulation/mix/config/8DC-hetero/server-output/Figure11/global-weight" \
     -o "server-output/Figure11/global-weight"
 
 # Step 3: Merge results
 echo "[3/4] Merging results..."
-python3 merge_fct_results.py \
+python3 merge_fct_results_globalWeight.py \
     -i "server-output/Figure11/global-weight" \
     -o "server-output/Figure11/global-weight"
 
 # Step 4: Plot FCT slowdown
-echo "[4/4] Plotting FCT slowdown..."
-python3 plot_fct_slowdown.py -d server-output/Figure11/global-weight
+# echo "[4/4] Plotting FCT slowdown..."
+# python3 plot_fct_slowdown.py -m single -i server-output/Figure11/global-weight/merged_output-8DC-hetero-onlyDC1-8-DCQCN-FCTslowdown.csv
+
 
 echo "=========================================="
 echo "Figure 11 (Global Weight) completed successfully!"

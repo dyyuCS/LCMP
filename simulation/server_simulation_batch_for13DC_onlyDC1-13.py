@@ -19,15 +19,15 @@ def modify_config(config_path, output_dir, routing_mode, x_util, cc_mode, datase
         elif line.strip().startswith('OUTPUT_DIR'):
             if routing_mode == '0':
                 # 使用 str.format() 进行字符串拼接
-                new_dir = '{}/{}/Figure-7and8-13DC_3routing_3traffic/{}/{}/ECMP/'.format(base_dir, output_dir, dataset, x_util)
+                new_dir = '{}/{}/{}/{}/ECMP/'.format(base_dir, output_dir, dataset, x_util)
             elif routing_mode == '1':
-                new_dir = '{}/{}/Figure-7and8-13DC_3routing_3traffic/{}/{}/UCMP/'.format(base_dir, output_dir, dataset, x_util)
+                new_dir = '{}/{}/{}/{}/UCMP/'.format(base_dir, output_dir, dataset, x_util)
             elif routing_mode == '2':
-                new_dir = '{}/{}/Figure-7and8-13DC_3routing_3traffic/{}/{}/Ours/'.format(base_dir, output_dir, dataset, x_util)
+                new_dir = '{}/{}/{}/{}/Ours/'.format(base_dir, output_dir, dataset, x_util)
             new_lines.append('OUTPUT_DIR {}\n'.format(new_dir))
         elif line.strip().startswith('FLOW_FILE'):
             # 【修改点1】使用 str.format() 替代 f-string
-            flow_file_line = 'FLOW_FILE ${{WORKING_DIR}}traffic_{0}_13DC_forDC1And13-{1}.txt\n'.format(dataset, x_util)
+            flow_file_line = 'FLOW_FILE ${{WORKING_DIR}}traffic_{0}_13DC-onlyDC1-13-{1}.txt\n'.format(dataset, x_util)
             new_lines.append(flow_file_line)
         elif line.strip().startswith('TOPOLOGY_FILE'):
             # 【修改点2】移除 f 前缀，因为这里没有变量，只是一个普通字符串
@@ -62,13 +62,13 @@ if __name__ == '__main__':
     DATASET = ['WebSearch']
 
     # for routing_mode in ['0']:  # 0: ECMP, 1: UCMP, 2: Ours
-    for routing_mode in ['1']:  # 0: ECMP, 1: UCMP, 2: Ours
+    # for routing_mode in ['1']:  # 0: ECMP, 1: UCMP, 2: Ours
     # for routing_mode in ['2']:  # 0: ECMP, 1: UCMP, 2: Ours
     # for routing_mode in ['0', '2']:  # 0: ECMP, 1: UCMP, 2: Ours
-    # for routing_mode in ['0', '1', '2']:  # 0: ECMP, 1: UCMP, 2: Ours
+    for routing_mode in ['0', '1', '2']:  # 0: ECMP, 1: UCMP, 2: Ours
         for x_util in UTIL_LIST:
             # for cc_mode in ['1','3', '7', '8']: # CC_MODE 1: DCQCN, 3: HPCC, 7: TIMELY, 8: DCTCP, 10: HPCC-PINT}
-            for cc_mode in [ '3']: # CC_MODE 1: DCQCN, 3: HPCC, 7: TIMELY, 8: DCTCP, 10: HPCC-PINT}
+            for cc_mode in [ '1']: # CC_MODE 1: DCQCN, 3: HPCC, 7: TIMELY, 8: DCTCP, 10: HPCC-PINT}
                 for dataset in DATASET:
                     modify_config(CONFIG_PATH, output_dir, routing_mode, x_util, cc_mode, dataset)
                     run_simulation(CONFIG_PATH)

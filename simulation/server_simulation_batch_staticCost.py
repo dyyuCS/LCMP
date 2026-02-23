@@ -22,7 +22,7 @@ def modify_config(config_path, output_dir_base, topology, w_dl, w_bw):
         # General config
         'ROUTING_MODE': 2,
         'CC_MODE': 1,
-        'OUTPUT_DIR': '{}/Figure11/{}/output-8DC-hetero-onlyDC1-8-DCQCN/w_dl={}-w_bw={}/'.format(base_dir, output_dir_base, w_dl, w_bw),
+        'OUTPUT_DIR': '{}/{}/output-8DC-hetero-onlyDC1-8-DCQCN/w_dl={}-w_bw={}/'.format(base_dir, output_dir_base, w_dl, w_bw),
         'FLOW_FILE': '${WORKING_DIR}traffic_WebSearch_8DC_forDC1And8-0.3util.txt',
         'TOPOLOGY_FILE': '${{WORKING_DIR}}{}.txt'.format(topology),
         'WORKING_DIR': '{}/'.format(base_dir),
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     output_dir_base = args.output
-    CONFIG_PATH = 'mix/config/8DC-hetero-onlyDC1-8/config_batch.txt'
+    CONFIG_PATH = 'mix/config/8DC-hetero/config_batch.txt'
     
     TOPOLOGIES = ['topology_LeafSpine_MultiDC8']
     PARAM_CONFIGS = [{'w_dl': 3, 'w_bw': 1}, {'w_dl': 2, 'w_bw': 2}, {'w_dl': 1, 'w_bw': 3}]

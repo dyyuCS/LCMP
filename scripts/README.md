@@ -49,10 +49,15 @@ Each script automates the entire pipeline for a specific experiment:
 
 ### Large-Scale (13 Datacenters) Experiments
 
-- **`run_figure7_8.sh`** - Routing and Traffic Load Comparison (13DC)
+- **`run_figure7.sh`** - Routing and Traffic Load Comparison (13DC)
   - Large-scale evaluation of routing algorithms
-  - Tests both all-DC and DC1-DC13 specific flows
-  - Output: `analysis/server-output/Figure-7and8-13DC_3routing_3traffic`
+  - Tests both all-DC  flows
+  - Output: `analysis/server-output/Figure-7-13DC_3routing_3traffic`
+
+- **`run_figure7.sh`** - Routing and Traffic Load Comparison (13DC)
+  - Large-scale evaluation of routing algorithms
+  - Tests both DC1-DC13 specific flows
+  - Output: `analysis/server-output/Figure-8-13DC_onlyDC1-13_3routing_3traffic`
 
 ### Master Script
 

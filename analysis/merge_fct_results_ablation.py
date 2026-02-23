@@ -55,9 +55,10 @@ def main():
     args = parser.parse_args()
 
     UTILs = [
-        '0.3util',
+        # '0.3util',
         # '0.5util',
         # '0.8util'
+        'output-8DC-hetero-onlyDC1-8-DCQCN'
     ]
     ABLATIONS = [
         "alpha=0-beta=4",
