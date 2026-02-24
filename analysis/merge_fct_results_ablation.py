@@ -11,7 +11,7 @@ def merge_fct_csvs(util_value, input_dir, output_dir, ABLATIONS):
 
     ablation_data = {}
     for ablation in ABLATIONS:
-        file_path = os.path.join(input_dir, f"{util_value}/{ablation}_{util_value}-FCTslowdown.csv")
+        file_path = os.path.join(input_dir, f"{ablation}-FCTslowdown.csv")
         if not os.path.exists(file_path):
             print(f"Warning: File {file_path} does not exist. Skipping.")
             continue
@@ -58,7 +58,7 @@ def main():
         # '0.3util',
         # '0.5util',
         # '0.8util'
-        'output-8DC-hetero-onlyDC1-8-DCQCN'
+        'ablation'
     ]
     ABLATIONS = [
         "alpha=0-beta=4",

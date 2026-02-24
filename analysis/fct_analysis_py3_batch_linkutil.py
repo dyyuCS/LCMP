@@ -26,9 +26,9 @@ if __name__=="__main__":
 	# For the exact naming, please check ../simulation/mix/fct_*.txt output by the simulation.
 	CCs = [
 		'dcqcn',
-		'hpcc',
-		'timely',
-		'dctcp',
+		# 'hpcc',
+		# 'timely',
+		# 'dctcp',
 	]
 	UTILs = [
 		'0.3util',
@@ -39,15 +39,19 @@ if __name__=="__main__":
 		"Ours",
 		"ECMP",
 		"UCMP",
+		# 'link-util',
 	]
 
+	cc = CCs[0]
 	step = int(args.step)
 	
 	
-	for util in UTILs:
-		for cc in CCs:
+	for routing in ROUTINGs:
+		for util in UTILs:
 			res = [[i/100.] for i in range(0, 100, step)]
-			for routing in ROUTINGs:
+			for cc in CCs:
+				#file = "%s_%s.txt"%(args.prefix, cc)
+				# 获取prefix的绝对路径
 				current_file_path = os.path.abspath(__file__)
 				inputPath_abs = os.path.join(os.path.dirname(current_file_path), args.inputPath)
 				fileName = f'{util}/{routing}/fct_{cc}.txt'
@@ -94,15 +98,16 @@ if __name__=="__main__":
 			output_dir = args.outputPath
 			output_dir = os.path.dirname(f'{output_dir}/{util}/')
 			if output_dir and not os.path.exists(output_dir):
-				os.makedirs(output_dir, exist_ok=True)
+				os.makedirs(output_dir)
 			
-			output_name = f"{output_dir}/{cc}_{util}-FCTslowdown.csv"
+			output_name = f"{output_dir}/{routing}_{util}-FCTslowdown.csv"
 			with open(f'{output_name}', 'w') as csvfile:
 				writer = csv.writer(csvfile)
 				# 写入表头
 				header = ['Percentile', 'FlowSize']
-				for routing in ROUTINGs:
+				for cc in CCs:
 					header += [f'{routing}-{cc}-fct_p50', f'{routing}-{cc}-fct_p99']
+					# header += [f'{routing}-{cc}-fct_median', f'{routing}-{cc}-fct_p95', f'{routing}-{cc}-fct_p99']
 				writer.writerow(header)
 
 			# 新增: 检查并创建文件夹、输出并写入csv --------
@@ -111,7 +116,7 @@ if __name__=="__main__":
 					line = "%.3f %d"%(item[0], item[1])
 					row = [item[0], item[1]]
 					i = 1
-					for routing in ROUTINGs:
+					for cc in CCs:
 						# line += "\t%.3f %.3f %.3f"%(item[i+1], item[i+2], item[i+3])
 						# row += [item[i+1], item[i+2], item[i+3]]
 						# i += 4

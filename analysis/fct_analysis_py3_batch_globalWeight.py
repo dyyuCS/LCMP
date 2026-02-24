@@ -30,13 +30,6 @@ if __name__=="__main__":
 		# 'timely',
 		# 'dctcp',
 	]
-	UTILs = [
-		# '0.3util',
-		# '0.5util',
-		# '0.8util'
-		'output-8DC-hetero-onlyDC1-8-DCQCN'
-	]
-
 	ABLATIONS = [
 		"alpha=1-beta=3",
 		"alpha=2-beta=2",
@@ -48,79 +41,78 @@ if __name__=="__main__":
 
 
 	for ablation in ABLATIONS:
-		for util in UTILs:
-			res = [[i/100.] for i in range(0, 100, step)]
+		res = [[i/100.] for i in range(0, 100, step)]
+		for cc in CCs:
+			#file = "%s_%s.txt"%(args.prefix, cc)
+			# 获取prefix的绝对路径
+			current_file_path = os.path.abspath(__file__)
+			inputPath_abs = os.path.join(os.path.dirname(current_file_path), args.inputPath)
+			fileName = f'{ablation}/fct_{cc}.txt'
+			file = f'{inputPath_abs}/{fileName}'
+			
+			print(f"File path: {file}")
+
+			if not os.path.exists(file):
+				print(f"File not found: {file}")
+				exit()
+
+			if type == 0:
+				cmd = "cat %s"%(file)+" | awk '{if ($4==100 && $6+$7<"+"%d"%time_limit+") {slow=$7/$8;print slow<1?1:slow, $5}}' | sort -n -k 2"
+				# print cmd
+				output = subprocess.check_output(cmd, shell=True)
+			elif type == 1:
+				cmd = "cat %s"%(file)+" | awk '{if ($4==200 && $6+$7<"+"%d"%time_limit+") {slow=$7/$8;print slow<1?1:slow, $5}}' | sort -n -k 2"
+				#print cmd
+				output = subprocess.check_output(cmd, shell=True)
+			else:
+				cmd = "cat %s"%(file)+" | awk '{$6+$7<"+"%d"%time_limit+") {slow=$7/$8;print slow<1?1:slow, $5}}' | sort -n -k 2"
+				#print cmd
+				output = subprocess.check_output(cmd, shell=True)
+
+			# up to here, `output` should be a string of multiple lines, each line is: fct, size
+			# 如果 output 是 bytes，先解码
+			if isinstance(output, bytes):
+				output = output.decode('utf-8')
+			a = output.split('\n')[:-2]
+			n = len(a)
+			for i in range(0, 100, step):
+				l = i * n // 100
+				r = (i + step) * n // 100
+				d = [ [float(x.split()[0]), int(x.split()[1])] for x in a[l:r] ]
+				fct = sorted([x[0] for x in d])
+				idx = i // step
+				res[idx].append(d[-1][1])  # flow size
+				# res[idx].append(sum(fct) / len(fct)) # avg fct
+				res[idx].append(get_pctl(fct, 0.5))   # mid fct
+				# res[idx].append(get_pctl(fct, 0.95))  # 95-pct fct
+				res[idx].append(get_pctl(fct, 0.99))  # 99-pct fct
+		
+		# 新增: 检查并创建文件夹、输出并写入csv --------
+		output_dir = args.outputPath
+		output_dir = os.path.dirname(f'{output_dir}/')
+		if output_dir and not os.path.exists(output_dir):
+			os.makedirs(output_dir)
+		
+		output_name = f"{output_dir}/{ablation}-FCTslowdown.csv"
+		with open(f'{output_name}', 'w') as csvfile:
+			writer = csv.writer(csvfile)
+			# 写入表头
+			header = ['Percentile', 'FlowSize']
 			for cc in CCs:
-				#file = "%s_%s.txt"%(args.prefix, cc)
-				# 获取prefix的绝对路径
-				current_file_path = os.path.abspath(__file__)
-				inputPath_abs = os.path.join(os.path.dirname(current_file_path), args.inputPath)
-				fileName = f'{util}/{ablation}/fct_{cc}.txt'
-				file = f'{inputPath_abs}/{fileName}'
-				
-				print(f"File path: {file}")
+				header += [f'{ablation}-{cc}-fct_p50', f'{ablation}-{cc}-fct_p99']
+			writer.writerow(header)
 
-				if not os.path.exists(file):
-					print(f"File not found: {file}")
-					exit()
-
-				if type == 0:
-					cmd = "cat %s"%(file)+" | awk '{if ($4==100 && $6+$7<"+"%d"%time_limit+") {slow=$7/$8;print slow<1?1:slow, $5}}' | sort -n -k 2"
-					# print cmd
-					output = subprocess.check_output(cmd, shell=True)
-				elif type == 1:
-					cmd = "cat %s"%(file)+" | awk '{if ($4==200 && $6+$7<"+"%d"%time_limit+") {slow=$7/$8;print slow<1?1:slow, $5}}' | sort -n -k 2"
-					#print cmd
-					output = subprocess.check_output(cmd, shell=True)
-				else:
-					cmd = "cat %s"%(file)+" | awk '{$6+$7<"+"%d"%time_limit+") {slow=$7/$8;print slow<1?1:slow, $5}}' | sort -n -k 2"
-					#print cmd
-					output = subprocess.check_output(cmd, shell=True)
-
-				# up to here, `output` should be a string of multiple lines, each line is: fct, size
-				# 如果 output 是 bytes，先解码
-				if isinstance(output, bytes):
-					output = output.decode('utf-8')
-				a = output.split('\n')[:-2]
-				n = len(a)
-				for i in range(0, 100, step):
-					l = i * n // 100
-					r = (i + step) * n // 100
-					d = [ [float(x.split()[0]), int(x.split()[1])] for x in a[l:r] ]
-					fct = sorted([x[0] for x in d])
-					idx = i // step
-					res[idx].append(d[-1][1])  # flow size
-					# res[idx].append(sum(fct) / len(fct)) # avg fct
-					res[idx].append(get_pctl(fct, 0.5))   # mid fct
-					# res[idx].append(get_pctl(fct, 0.95))  # 95-pct fct
-					res[idx].append(get_pctl(fct, 0.99))  # 99-pct fct
-			
-			# 新增: 检查并创建文件夹、输出并写入csv --------
-			output_dir = args.outputPath
-			output_dir = os.path.dirname(f'{output_dir}/{util}/')
-			if output_dir and not os.path.exists(output_dir):
-				os.makedirs(output_dir)
-			
-			output_name = f"{output_dir}/{ablation}_{util}-FCTslowdown.csv"
-			with open(f'{output_name}', 'w') as csvfile:
-				writer = csv.writer(csvfile)
-				# 写入表头
-				header = ['Percentile', 'FlowSize']
+		# 新增: 检查并创建文件夹、输出并写入csv --------
+			# 写入数据
+			for item in res:
+				line = "%.3f %d"%(item[0], item[1])
+				row = [item[0], item[1]]
+				i = 1
 				for cc in CCs:
-					header += [f'{ablation}-{cc}-fct_p50', f'{ablation}-{cc}-fct_p99']
-				writer.writerow(header)
-
-			# 新增: 检查并创建文件夹、输出并写入csv --------
-				# 写入数据
-				for item in res:
-					line = "%.3f %d"%(item[0], item[1])
-					row = [item[0], item[1]]
-					i = 1
-					for cc in CCs:
-						line += "\t%.3f %.3f"%(item[i+1], item[i+2])
-						row += [item[i+1], item[i+2]]
-						i += 3
-					print(line)
-					writer.writerow(row)
+					line += "\t%.3f %.3f"%(item[i+1], item[i+2])
+					row += [item[i+1], item[i+2]]
+					i += 3
+				print(line)
+				writer.writerow(row)
 
 
