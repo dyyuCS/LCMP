@@ -28,7 +28,7 @@ python3 merge_fct_results_congestion.py \
 
 # # Step 4: Plot FCT slowdown
 echo "[4/4] Plotting FCT slowdown..."
-python3 plot_fct_slowdown.py -m single -i server-output/Figure11/congestion-cost/merged_output-8DC-hetero-onlyDC1-8-DCQCN-FCTslowdown.csv
+python3 plot_fct_slowdown.py -m single -i server-output/Figure11/congestion-cost/merged_congestion-FCTslowdown.csv
 
 
 echo "=========================================="

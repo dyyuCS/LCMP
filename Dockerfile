@@ -1,5 +1,5 @@
 # Base image: Ubuntu 22.04 (amd64 architecture)
-FROM --platform=linux/amd64 ubuntu:22.04
+FROM ubuntu:22.04
 # Disable interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
 

@@ -36,4 +36,3 @@ echo "=========================================="
 echo "Figure 5 completed successfully!"
 echo "Results saved in: analysis/server-output/Figure5-8DC_3routing_3traffic"
 echo "=========================================="
-

@@ -29,4 +29,3 @@ echo "=========================================="
 echo "Figure 10 completed successfully!"
 echo "Results saved in: analysis/server-output/Figure10-8DC_differCC"
 echo "=========================================="
-

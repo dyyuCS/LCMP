@@ -37,7 +37,7 @@ protected:
 	const uint64_t m_bufferCapacity = 5ULL * 1000ULL * 1000ULL * 1000ULL; // 例如 5GB (单位统一为Byte); // 所有端口共享
 	const uint64_t MAX_BW = 400; // 单位Gbps
 	//[new] 延迟成本相关
-	const int MAX_DELAY_SHIFT = 9; // 表示2**9 = 512ms
+	const int MAX_DELAY_SHIFT = 5; // 表示2**5 = 32ms
 
 	// [NEW] 关于带宽
 	static const int kClassNum = 10;

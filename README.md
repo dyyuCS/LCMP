@@ -159,7 +159,7 @@ See `scripts/README.md` for detailed information about available scripts and the
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the Apache-2.0 License.
 
 
 

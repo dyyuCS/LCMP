@@ -31,10 +31,6 @@ echo "[4/4] Plotting FCT slowdown..."
 python3 plot_fct_slowdown.py -m single -i server-output/Figure-7-13DC_3routing_3traffic/merged_0.3util-FCTslowdown.csv
 python3 plot_fct_slowdown.py -m single -i server-output/Figure-7-13DC_3routing_3traffic/merged_0.5util-FCTslowdown.csv
 python3 plot_fct_slowdown.py -m single -i server-output/Figure-7-13DC_3routing_3traffic/merged_0.8util-FCTslowdown.csv
-# TODO: xiaodiwang
-# python3 plot_fct_slowdown.py -m single -i server-output/Figure-7and8-13DC_3routing_3traffic/merged_0.3util-FCTslowdown-DC1-DC13.csv
-# python3 plot_fct_slowdown.py -m single -i server-output/Figure-7and8-13DC_3routing_3traffic/merged_0.5util-FCTslowdown-DC1-DC13.csv
-# python3 plot_fct_slowdown.py -m single -i server-output/Figure-7and8-13DC_3routing_3traffic/merged_0.8util-FCTslowdown-DC1-DC13.csv
 
 echo "=========================================="
 echo "Figure 7 completed successfully!"

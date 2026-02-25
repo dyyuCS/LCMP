@@ -24,7 +24,7 @@ def modify_config(config_path, output_dir_base, topology, w_ql, w_tl, w_dp):
         # General config
         'ROUTING_MODE': 2,
         'CC_MODE': 1,
-        'OUTPUT_DIR': '{}/{}/output-8DC-hetero-onlyDC1-8-DCQCN/w_ql={}-w_tl={}-w_dp={}/'.format(base_dir, output_dir_base, w_ql, w_tl, w_dp),
+        'OUTPUT_DIR': '{}/{}/w_ql={}-w_tl={}-w_dp={}/'.format(base_dir, output_dir_base, w_ql, w_tl, w_dp),
         'FLOW_FILE': '${WORKING_DIR}traffic_WebSearch_8DC_forDC1And8-0.3util.txt',
         'TOPOLOGY_FILE': '${{WORKING_DIR}}{}.txt'.format(topology),
         'WORKING_DIR': '{}/'.format(base_dir),

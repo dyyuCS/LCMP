@@ -27,8 +27,8 @@ python3 merge_fct_results_globalWeight.py \
     -o "server-output/Figure11/global-weight"
 
 # Step 4: Plot FCT slowdown
-# echo "[4/4] Plotting FCT slowdown..."
-# python3 plot_fct_slowdown.py -m single -i server-output/Figure11/global-weight/merged_output-8DC-hetero-onlyDC1-8-DCQCN-FCTslowdown.csv
+echo "[4/4] Plotting FCT slowdown..."
+python3 plot_fct_slowdown.py -m single -i server-output/Figure11/global-weight/merged_globalWeight-FCTslowdown.csv
 
 
 echo "=========================================="

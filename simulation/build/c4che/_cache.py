@@ -1,33 +1,36 @@
 APPNAME = 'ns'
-AR = '/data/ssd1/yudongyang/software/anaconda3/envs/py27/bin/x86_64-conda_cos6-linux-gnu-ar'
+AR = '/usr/bin/ar'
 ARFLAGS = 'rcs'
 BINDIR = '/usr/local/bin'
+BOOST_VERSION = '1_74'
 BUILD_PROFILE = 'debug'
 BUILD_SUFFIX = '-debug'
-CC = ['/data/ssd1/yudongyang/software/anaconda3/envs/py27/bin/x86_64-conda_cos6-linux-gnu-cc']
+CC = ['/usr/bin/gcc']
 CCDEFINES = ['_DEBUG']
-CCFLAGS = ['-O0', '-ggdb', '-g3', '-DNDEBUG', '-D_FORTIFY_SOURCE=2', '-O2', '-fvisibility-inlines-hidden', '-std=c++11', '-fmessage-length=0', '-march=nocona', '-mtune=haswell', '-ftree-vectorize', '-fPIC', '-fstack-protector-strong', '-O2', '-pipe', '-Wno-error=deprecated-declarations', '-fstrict-aliasing', '-Wstrict-aliasing']
+CCFLAGS = ['-O0', '-ggdb', '-g3', '-O0', '-ggdb', '-g3', '-std=gnu++11', '-Wno-error=deprecated-declarations', '-fstrict-aliasing', '-Wstrict-aliasing']
 CCFLAGS_PTHREAD = '-pthread'
 CCLNK_SRC_F = []
 CCLNK_TGT_F = ['-o']
 CC_NAME = 'gcc'
 CC_SRC_F = []
 CC_TGT_F = ['-c', '-o']
-CC_VERSION = ('5', '4', '0')
-CFLAGS = ['-DNDEBUG', '-D_FORTIFY_SOURCE=2', '-O2', '-march=nocona', '-mtune=haswell', '-ftree-vectorize', '-fPIC', '-fstack-protector-strong', '-O2', '-pipe']
+CC_VERSION = ('5', '3', '1')
+CFLAGS_GTK2 = ['-pthread']
 CFLAGS_MACBUNDLE = ['-fPIC']
-CFLAGS_PYEMBED = ['-fno-strict-aliasing', '-march=nocona', '-mtune=haswell', '-ftree-vectorize', '-fPIC', '-fstack-protector-strong', '-fno-plt', '-fwrapv', '-fno-strict-aliasing', '-fno-strict-aliasing', '-march=nocona', '-mtune=haswell', '-ftree-vectorize', '-fPIC', '-fstack-protector-strong', '-fno-plt', '-fwrapv']
-CFLAGS_PYEXT = ['-pthread', '-fno-strict-aliasing', '-march=nocona', '-mtune=haswell', '-ftree-vectorize', '-fPIC', '-fstack-protector-strong', '-fno-plt', '-fwrapv', '-fno-strict-aliasing']
+CFLAGS_PYEMBED = ['-flto=auto', '-ffat-lto-objects', '-flto=auto', '-fno-strict-aliasing', '-fwrapv', '-ffile-prefix-map=/build/python2.7-6b3SkC/python2.7-2.7.18=.', '-flto=auto', '-ffat-lto-objects', '-flto=auto', '-ffat-lto-objects', '-fstack-protector-strong', '-fno-strict-aliasing', '-fno-strict-aliasing', '-ffile-prefix-map=/build/python2.7-6b3SkC/python2.7-2.7.18=.', '-flto=auto', '-ffat-lto-objects', '-flto=auto', '-ffat-lto-objects', '-fstack-protector-strong', '-fwrapv']
+CFLAGS_PYEXT = ['-flto=auto', '-ffat-lto-objects', '-flto=auto', '-flto=auto', '-ffat-lto-objects', '-flto=auto', '-fno-strict-aliasing', '-fwrapv', '-ffile-prefix-map=/build/python2.7-6b3SkC/python2.7-2.7.18=.', '-flto=auto', '-ffat-lto-objects', '-flto=auto', '-ffat-lto-objects', '-fstack-protector-strong', '-fno-strict-aliasing', '-fwrapv', '-ffile-prefix-map=/build/python2.7-6b3SkC/python2.7-2.7.18=.', '-flto=auto', '-ffat-lto-objects', '-flto=auto', '-ffat-lto-objects', '-fstack-protector-strong', '-fno-strict-aliasing']
 CFLAGS_cshlib = ['-fPIC']
 COMPILER_CC = 'gcc'
 COMPILER_CXX = 'g++'
 CPPPATH_ST = '-I%s'
-CXX = ['/data/ssd1/yudongyang/software/anaconda3/envs/py27/bin/x86_64-conda_cos6-linux-gnu-c++']
-CXXFLAGS = ['-DNDEBUG', '-D_FORTIFY_SOURCE=2', '-O2', '-fvisibility-inlines-hidden', '-std=c++11', '-fmessage-length=0', '-march=nocona', '-mtune=haswell', '-ftree-vectorize', '-fPIC', '-fstack-protector-strong', '-O2', '-pipe']
+CXX = ['/usr/bin/g++']
+CXXDEFINES = ['_DEBUG']
+CXXFLAGS = ['-O0', '-ggdb', '-g3', '-std=gnu++11', '-Wno-error=deprecated-declarations', '-fstrict-aliasing', '-Wstrict-aliasing']
+CXXFLAGS_GTK2 = ['-pthread']
 CXXFLAGS_MACBUNDLE = ['-fPIC']
 CXXFLAGS_PTHREAD = '-pthread'
-CXXFLAGS_PYEMBED = ['-fno-strict-aliasing', '-march=nocona', '-mtune=haswell', '-ftree-vectorize', '-fPIC', '-fstack-protector-strong', '-fno-plt', '-fwrapv', '-fno-strict-aliasing', '-fno-strict-aliasing', '-march=nocona', '-mtune=haswell', '-ftree-vectorize', '-fPIC', '-fstack-protector-strong', '-fno-plt', '-fwrapv']
-CXXFLAGS_PYEXT = ['-pthread', '-fno-strict-aliasing', '-march=nocona', '-mtune=haswell', '-ftree-vectorize', '-fPIC', '-fstack-protector-strong', '-fno-plt', '-fwrapv', '-fno-strict-aliasing']
+CXXFLAGS_PYEMBED = ['-flto=auto', '-ffat-lto-objects', '-flto=auto', '-fno-strict-aliasing', '-fwrapv', '-ffile-prefix-map=/build/python2.7-6b3SkC/python2.7-2.7.18=.', '-flto=auto', '-ffat-lto-objects', '-flto=auto', '-ffat-lto-objects', '-fstack-protector-strong', '-fno-strict-aliasing', '-fno-strict-aliasing', '-ffile-prefix-map=/build/python2.7-6b3SkC/python2.7-2.7.18=.', '-flto=auto', '-ffat-lto-objects', '-flto=auto', '-ffat-lto-objects', '-fstack-protector-strong', '-fwrapv']
+CXXFLAGS_PYEXT = ['-flto=auto', '-ffat-lto-objects', '-flto=auto', '-flto=auto', '-ffat-lto-objects', '-flto=auto', '-fno-strict-aliasing', '-fwrapv', '-ffile-prefix-map=/build/python2.7-6b3SkC/python2.7-2.7.18=.', '-flto=auto', '-ffat-lto-objects', '-flto=auto', '-ffat-lto-objects', '-fstack-protector-strong', '-fno-strict-aliasing', '-fwrapv', '-ffile-prefix-map=/build/python2.7-6b3SkC/python2.7-2.7.18=.', '-flto=auto', '-ffat-lto-objects', '-flto=auto', '-ffat-lto-objects', '-fstack-protector-strong', '-fno-strict-aliasing']
 CXXFLAGS_cxxshlib = ['-fPIC']
 CXXLNK_SRC_F = []
 CXXLNK_TGT_F = ['-o']
@@ -36,9 +39,9 @@ CXX_SRC_F = []
 CXX_TGT_F = ['-c', '-o']
 DATADIR = '/usr/local/share'
 DATAROOTDIR = '/usr/local/share'
-DEFINES = ['NS3_ASSERT_ENABLE', 'NS3_LOG_ENABLE', 'HAVE_PACKET_H=1', 'HAVE_IF_TUN_H=1']
-DEFINES_PYEMBED = ['NDEBUG', 'NDEBUG']
-DEFINES_PYEXT = ['NDEBUG']
+DEFINES = ['NS3_ASSERT_ENABLE', 'NS3_LOG_ENABLE', 'HAVE_PACKET_H=1', 'HAVE_SQLITE3=1', 'HAVE_IF_TUN_H=1']
+DEFINES_PYEMBED = ['NDEBUG', '_FORTIFY_SOURCE=2', '_FORTIFY_SOURCE=2', 'NDEBUG']
+DEFINES_PYEXT = ['NDEBUG', '_FORTIFY_SOURCE=2', 'NDEBUG', '_FORTIFY_SOURCE=2']
 DEFINES_ST = '-D%s'
 DEST_BINFMT = 'elf'
 DEST_CPU = 'x86_64'
@@ -48,8 +51,8 @@ DVIDIR = '/usr/local/share/doc/ns'
 ENABLE_EMU = True
 ENABLE_EXAMPLES = False
 ENABLE_GSL = None
-ENABLE_GTK2 = None
-ENABLE_LIBXML2 = None
+ENABLE_GTK2 = '-pthread -I/usr/include/gtk-2.0 -I/usr/lib/x86_64-linux-gnu/gtk-2.0/include -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/x86_64-linux-gnu -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/fribidi -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lharfbuzz -lfontconfig -lfreetype\n'
+ENABLE_LIBXML2 = '-I/usr/include/libxml2 -lxml2\n'
 ENABLE_NSC = False
 ENABLE_PYTHON_BINDINGS = False
 ENABLE_PYVIZ = False
@@ -63,43 +66,50 @@ EXAMPLE_DIRECTORIES = ['tutorial']
 EXEC_PREFIX = '/usr/local'
 HTMLDIR = '/usr/local/share/doc/ns'
 INCLUDEDIR = '/usr/local/include'
-INCLUDES_PYEMBED = ['/data/ssd1/yudongyang/software/anaconda3/envs/py27/include/python2.7']
-INCLUDES_PYEXT = ['/data/ssd1/yudongyang/software/anaconda3/envs/py27/include/python2.7']
+INCLUDES_BOOST = '/usr/include'
+INCLUDES_GTK2 = ['/usr/include/gtk-2.0', '/usr/lib/x86_64-linux-gnu/gtk-2.0/include', '/usr/include/pango-1.0', '/usr/include/atk-1.0', '/usr/include/gdk-pixbuf-2.0', '/usr/include/x86_64-linux-gnu', '/usr/include/harfbuzz', '/usr/include/libmount', '/usr/include/blkid', '/usr/include/fribidi', '/usr/include/cairo', '/usr/include/pixman-1', '/usr/include/glib-2.0', '/usr/lib/x86_64-linux-gnu/glib-2.0/include', '/usr/include/uuid', '/usr/include/freetype2', '/usr/include/libpng16']
+INCLUDES_LIBXML2 = ['/usr/include/libxml2']
+INCLUDES_PYEMBED = ['/usr/include/python2.7', '/usr/include/x86_64-linux-gnu/python2.7']
+INCLUDES_PYEXT = ['/usr/include/python2.7', '/usr/include/x86_64-linux-gnu/python2.7']
 INFODIR = '/usr/local/share/info'
 INT64X64_USE_128 = 1
 LIBDIR = '/usr/local/lib'
 LIBEXECDIR = '/usr/local/libexec'
-LIBPATH_PYEMBED = ['/data/ssd1/yudongyang/software/anaconda3/envs/py27/lib']
-LIBPATH_PYEXT = ['/data/ssd1/yudongyang/software/anaconda3/envs/py27/lib']
+LIBPATH_PYEMBED = ['/usr/lib/python2.7/config-x86_64-linux-gnu', '/usr/lib']
+LIBPATH_PYEXT = []
 LIBPATH_ST = '-L%s'
 LIB_BOOST = []
-LIB_PYEMBED = ['python2.7', 'pthread', 'dl', 'util', 'm']
+LIB_GTK2 = ['gtk-x11-2.0', 'gdk-x11-2.0', 'pangocairo-1.0', 'atk-1.0', 'cairo', 'gdk_pixbuf-2.0', 'gio-2.0', 'pangoft2-1.0', 'pango-1.0', 'gobject-2.0', 'glib-2.0', 'harfbuzz', 'fontconfig', 'freetype']
+LIB_LIBXML2 = ['xml2']
+LIB_PYEMBED = ['python2.7', 'dl', 'm']
 LIB_PYEXT = []
 LIB_RT = ['rt']
+LIB_SQLITE3 = ['sqlite3']
 LIB_ST = '-l%s'
-LINKFLAGS = ['-Wl,-O2', '-Wl,--sort-common', '-Wl,--as-needed', '-Wl,-z,relro', '-Wl,-z,now', '-Wl,-O2', '-Wl,--sort-common', '-Wl,--as-needed', '-Wl,-z,relro', '-Wl,-z,now']
+LINKFLAGS_GTK2 = ['-pthread']
 LINKFLAGS_MACBUNDLE = ['-bundle', '-undefined', 'dynamic_lookup']
 LINKFLAGS_PTHREAD = '-pthread'
-LINKFLAGS_PYEMBED = ['-Wl,-O2', '-Wl,--sort-common', '-Wl,--as-needed', '-Wl,-z,relro', '-Wl,-z,now', '-Wl,-rpath,/data/ssd1/yudongyang/software/anaconda3/envs/py27/lib', '-Wl,--no-as-needed']
-LINKFLAGS_PYEXT = ['-Wl,-O2', '-Wl,--sort-common', '-Wl,--as-needed', '-Wl,-z,relro', '-Wl,-z,now', '-Wl,-rpath,/data/ssd1/yudongyang/software/anaconda3/envs/py27/lib', '-Wl,--no-as-needed', '-pthread', '-Wl,-O2', '-Wl,--sort-common', '-Wl,--as-needed', '-Wl,-z,relro', '-Wl,-z,now', '-Wl,-rpath,/data/ssd1/yudongyang/software/anaconda3/envs/py27/lib', '-Wl,--no-as-needed']
+LINKFLAGS_PYEMBED = ['-Wl,-Bsymbolic-functions', '-Wl,-z,relro', '-Wl,-O1', '-Wl,-Bsymbolic-functions']
+LINKFLAGS_PYEXT = ['-Wl,-Bsymbolic-functions', '-Wl,-z,relro', '-Wl,-O1', '-Wl,-Bsymbolic-functions', '-Wl,-Bsymbolic-functions', '-Wl,-z,relro']
 LINKFLAGS_cshlib = ['-shared']
 LINKFLAGS_cstlib = ['-Wl,-Bstatic']
 LINKFLAGS_cxxshlib = ['-shared']
 LINKFLAGS_cxxstlib = ['-Wl,-Bstatic']
-LINK_CC = ['/data/ssd1/yudongyang/software/anaconda3/envs/py27/bin/x86_64-conda_cos6-linux-gnu-cc']
-LINK_CXX = ['/data/ssd1/yudongyang/software/anaconda3/envs/py27/bin/x86_64-conda_cos6-linux-gnu-c++']
+LINK_CC = ['/usr/bin/gcc']
+LINK_CXX = ['/usr/bin/g++']
 LOCALEDIR = '/usr/local/share/locale'
 LOCALSTATEDIR = '/usr/local/var'
 MANDIR = '/usr/local/share/man'
 MODULES_NOT_BUILT = ['click', 'openflow', 'visualizer']
 NS3_ENABLED_MODULES = ['ns3-antenna', 'ns3-aodv', 'ns3-applications', 'ns3-bridge', 'ns3-buildings', 'ns3-config-store', 'ns3-core', 'ns3-csma', 'ns3-csma-layout', 'ns3-dsdv', 'ns3-dsr', 'ns3-emu', 'ns3-energy', 'ns3-flow-monitor', 'ns3-internet', 'ns3-lte', 'ns3-mesh', 'ns3-mobility', 'ns3-mpi', 'ns3-netanim', 'ns3-network', 'ns3-nix-vector-routing', 'ns3-olsr', 'ns3-point-to-point', 'ns3-point-to-point-layout', 'ns3-propagation', 'ns3-spectrum', 'ns3-stats', 'ns3-tap-bridge', 'ns3-test', 'ns3-tools', 'ns3-topology-read', 'ns3-uan', 'ns3-virtual-net-device', 'ns3-wifi', 'ns3-wimax']
-NS3_EXECUTABLE_PATH = ['/data/ssd1/yudongyang/xiaodiwang/High-Precision-Congestion-Control/simulation/build/src/emu', '/data/ssd1/yudongyang/xiaodiwang/High-Precision-Congestion-Control/simulation/build/src/tap-bridge']
+NS3_EXECUTABLE_PATH = ['/root/simulation/build/src/emu', '/root/simulation/build/src/tap-bridge']
 NS3_MODULES = ['ns3-antenna', 'ns3-aodv', 'ns3-applications', 'ns3-bridge', 'ns3-buildings', 'ns3-config-store', 'ns3-core', 'ns3-csma', 'ns3-csma-layout', 'ns3-dsdv', 'ns3-dsr', 'ns3-emu', 'ns3-energy', 'ns3-flow-monitor', 'ns3-internet', 'ns3-lte', 'ns3-mesh', 'ns3-mobility', 'ns3-mpi', 'ns3-netanim', 'ns3-network', 'ns3-nix-vector-routing', 'ns3-olsr', 'ns3-point-to-point', 'ns3-point-to-point-layout', 'ns3-propagation', 'ns3-spectrum', 'ns3-stats', 'ns3-tap-bridge', 'ns3-test', 'ns3-tools', 'ns3-topology-read', 'ns3-uan', 'ns3-virtual-net-device', 'ns3-wifi', 'ns3-wimax']
-NS3_MODULE_PATH = ['/data/ssd1/yudongyang/software/anaconda3/envs/py27/bin/../lib/gcc/x86_64-conda_cos6-linux-gnu/5.4.0/../../../../x86_64-conda_cos6-linux-gnu/lib/../lib', '/data/ssd1/yudongyang/xiaodiwang/High-Precision-Congestion-Control/simulation/build']
-NS3_OPTIONAL_FEATURES = [('python', 'Python Bindings', False, 'Python library or headers missing'), ('nsclick', 'NS-3 Click Integration', False, 'nsclick not enabled (see option --with-nsclick)'), ('GtkConfigStore', 'GtkConfigStore', [], "library 'gtk+-2.0 >= 2.12' not found"), ('XmlIo', 'XmlIo', [], "library 'libxml-2.0 >= 2.7' not found"), ('Threading', 'Threading Primitives', True, '<pthread.h> include not detected'), ('RealTime', 'Real Time Simulator', True, 'threading not enabled'), ('EmuNetDevice', 'Emulated Net Device', True, '<netpacket/packet.h> include not detected'), ('nsc', 'Network Simulation Cradle', False, 'NSC not found (see option --with-nsc)'), ('mpi', 'MPI Support', False, 'option --enable-mpi not selected'), ('openflow', 'NS-3 OpenFlow Integration', False, 'Required boost libraries not found'), ('SqliteDataOutput', 'SQlite stats data output', [], "library 'sqlite3' not found"), ('TapBridge', 'Tap Bridge', True, '<linux/if_tun.h> include not detected'), ('PyViz', 'PyViz visualizer', False, 'Python Bindings are needed but not enabled'), ('ENABLE_SUDO', 'Use sudo to set suid bit', False, 'option --enable-sudo not selected'), ('ENABLE_TESTS', 'Build tests', False, 'defaults to disabled'), ('ENABLE_EXAMPLES', 'Build examples', False, 'defaults to disabled'), ('GSL', 'GNU Scientific Library (GSL)', [], 'GSL not found')]
+NS3_MODULE_PATH = ['/usr/lib/gcc/x86_64-linux-gnu/5', '/root/simulation/build']
+NS3_OPTIONAL_FEATURES = [('python', 'Python Bindings', False, 'Python library or headers missing'), ('nsclick', 'NS-3 Click Integration', False, 'nsclick not enabled (see option --with-nsclick)'), ('GtkConfigStore', 'GtkConfigStore', '-pthread -I/usr/include/gtk-2.0 -I/usr/lib/x86_64-linux-gnu/gtk-2.0/include -I/usr/include/pango-1.0 -I/usr/include/atk-1.0 -I/usr/include/gdk-pixbuf-2.0 -I/usr/include/x86_64-linux-gnu -I/usr/include/pango-1.0 -I/usr/include/harfbuzz -I/usr/include/pango-1.0 -I/usr/include/libmount -I/usr/include/blkid -I/usr/include/fribidi -I/usr/include/cairo -I/usr/include/pixman-1 -I/usr/include/harfbuzz -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -lgtk-x11-2.0 -lgdk-x11-2.0 -lpangocairo-1.0 -latk-1.0 -lcairo -lgdk_pixbuf-2.0 -lgio-2.0 -lpangoft2-1.0 -lpango-1.0 -lgobject-2.0 -lglib-2.0 -lharfbuzz -lfontconfig -lfreetype\n', "library 'gtk+-2.0 >= 2.12' not found"), ('XmlIo', 'XmlIo', '-I/usr/include/libxml2 -lxml2\n', "library 'libxml-2.0 >= 2.7' not found"), ('Threading', 'Threading Primitives', True, '<pthread.h> include not detected'), ('RealTime', 'Real Time Simulator', True, 'threading not enabled'), ('EmuNetDevice', 'Emulated Net Device', True, '<netpacket/packet.h> include not detected'), ('nsc', 'Network Simulation Cradle', False, 'NSC not found (see option --with-nsc)'), ('mpi', 'MPI Support', False, 'option --enable-mpi not selected'), ('openflow', 'NS-3 OpenFlow Integration', False, 'Required boost libraries not found'), ('SqliteDataOutput', 'SQlite stats data output', '-lsqlite3\n', "library 'sqlite3' not found"), ('TapBridge', 'Tap Bridge', True, '<linux/if_tun.h> include not detected'), ('PyViz', 'PyViz visualizer', False, 'Python Bindings are needed but not enabled'), ('ENABLE_SUDO', 'Use sudo to set suid bit', False, 'option --enable-sudo not selected'), ('ENABLE_TESTS', 'Build tests', False, 'defaults to disabled'), ('ENABLE_EXAMPLES', 'Build examples', False, 'defaults to disabled'), ('GSL', 'GNU Scientific Library (GSL)', [], 'GSL not found')]
 OLDINCLUDEDIR = '/usr/include'
 PACKAGE = 'ns'
 PDFDIR = '/usr/local/share/doc/ns'
+PKGCONFIG = '/usr/bin/pkg-config'
 PLATFORM = 'linux2'
 PREFIX = '/usr/local'
 PRINT_BUILT_MODULES_AT_END = False
@@ -109,10 +119,10 @@ PYCMD = '"import sys, py_compile;py_compile.compile(sys.argv[1], sys.argv[2])"'
 PYFLAGS = ''
 PYFLAGS_OPT = '-O'
 PYO = 1
-PYTHON = ['/data/ssd1/yudongyang/software/anaconda3/envs/py27/bin/python']
-PYTHONARCHDIR = '/usr/local/lib/python2.7/site-packages'
-PYTHONDIR = '/usr/local/lib/python2.7/site-packages'
-PYTHON_CONFIG = '/data/ssd1/yudongyang/software/anaconda3/envs/py27/bin/python-config'
+PYTHON = ['/usr/bin/python']
+PYTHONARCHDIR = '/usr/local/lib/python2.7/dist-packages'
+PYTHONDIR = '/usr/local/lib/python2.7/dist-packages'
+PYTHON_CONFIG = '/usr/bin/python2.7-config'
 PYTHON_VERSION = '2.7'
 REQUIRED_BOOST_LIBS = ['system', 'signals', 'filesystem']
 RPATH_ST = '-Wl,-rpath,%s'
@@ -120,21 +130,21 @@ SBINDIR = '/usr/local/sbin'
 SHAREDSTATEDIR = '/usr/local/com'
 SHLIB_MARKER = '-Wl,-Bdynamic'
 SONAME_ST = '-Wl,-h,%s'
-SQLITE_STATS = None
+SQLITE_STATS = '-lsqlite3\n'
 STLIBPATH_ST = '-L%s'
 STLIB_MARKER = '-Wl,-Bstatic'
 STLIB_ST = '-l%s'
-SUDO = '/bin/sudo'
+SUDO = '/usr/bin/sudo'
 SYSCONFDIR = '/usr/local/etc'
 VERSION = '3.18'
 WL_SONAME_SUPPORTED = True
-cfg_files = ['/data/ssd1/yudongyang/xiaodiwang/High-Precision-Congestion-Control/simulation/build/ns3/config-store-config.h', '/data/ssd1/yudongyang/xiaodiwang/High-Precision-Congestion-Control/simulation/build/ns3/core-config.h']
+cfg_files = ['/root/simulation/build/ns3/config-store-config.h', '/root/simulation/build/ns3/core-config.h']
 cprogram_PATTERN = '%s'
 cshlib_PATTERN = 'lib%s.so'
 cstlib_PATTERN = 'lib%s.a'
 cxxprogram_PATTERN = '%s'
 cxxshlib_PATTERN = 'lib%s.so'
 cxxstlib_PATTERN = 'lib%s.a'
-define_key = ['HAVE_PACKET_H', 'HAVE_IF_TUN_H']
+define_key = ['HAVE_PACKET_H', 'HAVE_SQLITE3', 'HAVE_IF_TUN_H']
 macbundle_PATTERN = '%s.bundle'
 pyext_PATTERN = '%s.so'

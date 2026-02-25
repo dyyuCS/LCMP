@@ -58,11 +58,11 @@ if __name__ == '__main__':
 
     # for routing_mode in ['0']:  # 0: ECMP, 1: UCMP, 2: Ours
     # for routing_mode in ['1']:  # 0: ECMP, 1: UCMP, 2: Ours
-    for routing_mode in ['2']:  # 0: ECMP, 1: UCMP, 2: Ours
+    # for routing_mode in ['2']:  # 0: ECMP, 1: UCMP, 2: Ours
     # for routing_mode in ['0', '2']:  # 0: ECMP, 1: UCMP, 2: Ours
-    # for routing_mode in ['0', '1', '2']:  # 0: ECMP, 1: UCMP, 2: Ours
+    for routing_mode in ['0', '1', '2']:  # 0: ECMP, 1: UCMP, 2: Ours
         for x_util in UTIL_LIST:
-            for cc_mode in ['3', '7', '8']: # CC_MODE 1: DCQCN, 3: HPCC, 7: TIMELY, 8: DCTCP, 10: HPCC-PINT}
+            for cc_mode in ['1','3', '7', '8']: # CC_MODE 1: DCQCN, 3: HPCC, 7: TIMELY, 8: DCTCP, 10: HPCC-PINT}
             # for cc_mode in [ '1']: # CC_MODE 1: DCQCN, 3: HPCC, 7: TIMELY, 8: DCTCP, 10: HPCC-PINT}
             # for cc_mode in [ '3']: # CC_MODE 1: DCQCN, 3: HPCC, 7: TIMELY, 8: DCTCP, 10: HPCC-PINT}
                 for dataset in DATASET:
