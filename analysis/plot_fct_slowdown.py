@@ -6,66 +6,66 @@ import numpy as np
 
 def plot_fct_slowdown(csv_file, output_dir=None):
     """
-    绘制FCT slowdown对比图
-    横轴: FlowSize
-    纵轴: FCT slowdown
-    对比不同算法的p50和p99（p50实线，p99虚线，在同一张图）
+    Plot FCT slowdown comparison.
+    X-axis: Flow Size
+    Y-axis: FCT Slowdown
+    Compares p50 and p99 of different algorithms (p50 as solid line, p99 as dashed line, on the same plot).
     """
-    # 读取CSV文件
+    # Read CSV file
     df = pd.read_csv(csv_file)
     
-    # 如果未指定输出目录，则使用CSV文件所在目录
+    # If output directory is not specified, use the CSV file's directory
     if output_dir is None:
         output_dir = os.path.dirname(csv_file)
     
-    # 创建输出目录
+    # Create output directory
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    # 获取文件名（不含扩展名）作为图片标题的一部分
+    # Get filename (without extension) to use as part of the plot title
     base_name = os.path.splitext(os.path.basename(csv_file))[0]
     
-    # 提取FlowSize
+    # Extract FlowSize
     flow_sizes = df['FlowSize'].values
     
-    # 获取所有算法列（排除Percentile和FlowSize）
+    # Get all algorithm columns (exclude Percentile and FlowSize)
     columns = [col for col in df.columns if col not in ['Percentile', 'FlowSize']]
     
-    # 分离p50和p99的列
+    # Separate p50 and p99 columns
     p50_cols = [col for col in columns if 'p50' in col]
     p99_cols = [col for col in columns if 'p99' in col]
     
-    # 定义颜色和标记样式
+    # Define colors and marker styles
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', 
               '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
     markers = ['o', 's', '^', 'D', 'v', '<', '>', 'p', '*', 'h']
     
-    # 创建单个图
+    # Create a single figure
     fig, ax = plt.subplots(figsize=(12, 7))
     
-    # 绘制p50（实线）
+    # Plot p50 (solid line)
     for idx, col in enumerate(p50_cols):
-        # 提取算法名称
+        # Extract algorithm name
         algo_name = col.replace('-fct_p50', '')
         ax.plot(flow_sizes, df[col].values, 
                 marker=markers[idx % len(markers)], 
                 color=colors[idx % len(colors)],
                 label=f'{algo_name} (p50)', 
                 linewidth=2, 
-                linestyle='-',  # 实线
+                linestyle='-',  # Solid line
                 markersize=6,
                 markevery=max(1, len(flow_sizes)//10))
     
-    # 绘制p99（虚线）
+    # Plot p99 (dashed line)
     for idx, col in enumerate(p99_cols):
-        # 提取算法名称
+        # Extract algorithm name
         algo_name = col.replace('-fct_p99', '')
         ax.plot(flow_sizes, df[col].values, 
                 marker=markers[idx % len(markers)], 
                 color=colors[idx % len(colors)],
                 label=f'{algo_name} (p99)', 
                 linewidth=2, 
-                linestyle='--',  # 虚线
+                linestyle='--',  # Dashed line
                 markersize=6,
                 markevery=max(1, len(flow_sizes)//10))
     
@@ -80,50 +80,50 @@ def plot_fct_slowdown(csv_file, output_dir=None):
     
     plt.tight_layout()
     
-    # 保存图片
+    # Save the plot
     output_file = os.path.join(output_dir, f'{base_name}_combined.png')
     plt.savefig(output_file, dpi=300, bbox_inches='tight')
-    print(f"图片已保存到: {output_file}")
+    print(f"Plot saved to: {output_file}")
     
-    # 显示图片
+    # Show the plot
     # plt.show()
     plt.close()
 
 
 def plot_fct_slowdown_separate(csv_file, output_dir=None):
     """
-    绘制FCT slowdown对比图（分开绘制p50和p99）
+    Plot FCT slowdown comparison (separate plots for p50 and p99).
     """
-    # 读取CSV文件
+    # Read CSV file
     df = pd.read_csv(csv_file)
     
-    # 如果未指定输出目录，则使用CSV文件所在目录
+    # If output directory is not specified, use the CSV file's directory
     if output_dir is None:
         output_dir = os.path.dirname(csv_file)
     
-    # 创建输出目录
+    # Create output directory
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     
-    # 获取文件名（不含扩展名）
+    # Get filename (without extension)
     base_name = os.path.splitext(os.path.basename(csv_file))[0]
     
-    # 提取FlowSize
+    # Extract FlowSize
     flow_sizes = df['FlowSize'].values
     
-    # 获取所有算法列
+    # Get all algorithm columns
     columns = [col for col in df.columns if col not in ['Percentile', 'FlowSize']]
     
-    # 分离p50和p99的列
+    # Separate p50 and p99 columns
     p50_cols = [col for col in columns if 'p50' in col]
     p99_cols = [col for col in columns if 'p99' in col]
     
-    # 定义颜色和标记样式
+    # Define colors and marker styles
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', 
               '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
     markers = ['o', 's', '^', 'D', 'v', '<', '>', 'p', '*', 'h']
     
-    # 绘制p50图
+    # Plot p50 figure
     fig, ax = plt.subplots(figsize=(10, 6))
     for idx, col in enumerate(p50_cols):
         algo_name = col.replace('-fct_p50', '')
@@ -147,10 +147,10 @@ def plot_fct_slowdown_separate(csv_file, output_dir=None):
     
     output_file = os.path.join(output_dir, f'{base_name}_p50.png')
     plt.savefig(output_file, dpi=300, bbox_inches='tight')
-    print(f"p50图片已保存到: {output_file}")
+    print(f"p50 plot saved to: {output_file}")
     plt.close()
     
-    # 绘制p99图
+    # Plot p99 figure
     fig, ax = plt.subplots(figsize=(10, 6))
     for idx, col in enumerate(p99_cols):
         algo_name = col.replace('-fct_p99', '')
@@ -174,67 +174,66 @@ def plot_fct_slowdown_separate(csv_file, output_dir=None):
     
     output_file = os.path.join(output_dir, f'{base_name}_p99.png')
     plt.savefig(output_file, dpi=300, bbox_inches='tight')
-    print(f"p99图片已保存到: {output_file}")
+    print(f"p99 plot saved to: {output_file}")
     plt.close()
 
 
 def batch_plot(input_dir='result', output_dir=None):
     """
-    批量处理指定目录下的所有CSV文件
+    Batch process all CSV files in the specified directory.
     """
-    # 遍历input_dir下的所有CSV文件
+    # Traverse all CSV files in input_dir
     for root, dirs, files in os.walk(input_dir):
         for file in files:
             if file.endswith('.csv') and 'FCTslowdown' in file:
                 csv_path = os.path.join(root, file)
-                print(f"\n处理文件: {csv_path}")
+                print(f"\nProcessing file: {csv_path}")
                 
-                # 如果指定了输出目录，则使用相对路径结构；否则输出到CSV同级目录
+                # If output directory is specified, use relative path structure; otherwise, output to the CSV file's directory
                 if output_dir:
                     rel_path = os.path.relpath(root, input_dir)
                     current_output_dir = os.path.join(output_dir, rel_path)
                 else:
-                    current_output_dir = root  # CSV文件所在目录
+                    current_output_dir = root  # Directory where the CSV file is located
                 
                 try:
-                    # 绘制合并图（p50实线 + p99虚线）
+                    # Plot combined figure (p50 solid line + p99 dashed line)
                     plot_fct_slowdown(csv_path, current_output_dir)
                 except Exception as e:
-                    print(f"处理文件 {csv_path} 时出错: {e}")
+                    print(f"Error processing file {csv_path}: {e}")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='绘制FCT slowdown对比图')
+    parser = argparse.ArgumentParser(description='Plot FCT slowdown comparison')
     parser.add_argument('-i', '--input', dest='input', action='store', 
-                        help='输入CSV文件路径（单个文件）')
+                        help='Input CSV file path (single file)')
     parser.add_argument('-d', '--input_dir', dest='input_dir', action='store', 
-                        default='result', help='输入CSV文件目录（批量处理）')
+                        default='result', help='Input CSV file directory (batch processing)')
     parser.add_argument('-o', '--output', dest='output_dir', action='store', 
-                        default=None, help='输出图片目录（默认为CSV文件所在目录）')
+                        default=None, help='Output plot directory (defaults to the CSV file\'s directory)')
     parser.add_argument('-m', '--mode', dest='mode', action='store', 
                         default='batch', choices=['single', 'batch'],
-                        help='处理模式: single(单个文件) 或 batch(批量处理)')
+                        help='Processing mode: single (single file) or batch (batch processing)')
     
     args = parser.parse_args()
     
     if args.mode == 'single':
         if not args.input:
-            print("错误: 单个文件模式需要指定 -i 参数")
+            print("Error: Single file mode requires the -i parameter.")
             exit(1)
         if not os.path.exists(args.input):
-            print(f"错误: 文件不存在: {args.input}")
+            print(f"Error: File does not exist: {args.input}")
             exit(1)
         
-        print(f"处理单个文件: {args.input}")
+        print(f"Processing single file: {args.input}")
         plot_fct_slowdown(args.input, args.output_dir)
     else:
-        # 批量处理模式
+        # Batch processing mode
         if not os.path.exists(args.input_dir):
-            print(f"错误: 目录不存在: {args.input_dir}")
+            print(f"Error: Directory does not exist: {args.input_dir}")
             exit(1)
         
-        print(f"批量处理目录: {args.input_dir}")
+        print(f"Batch processing directory: {args.input_dir}")
         batch_plot(args.input_dir, args.output_dir)
     
-    print("\n所有图片生成完成！")
-
+    print("\nAll plots generated successfully!")
