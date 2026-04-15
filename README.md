@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Auth](https://img.shields.io/badge/Auth-DongYang_Yu-blue)](https://dyyuCS.github.io)
+[![Auth](https://img.shields.io/badge/Auth-Dong--Yang_Yu-blue)](https://dyyuCS.github.io)
 [![Paper](https://img.shields.io/badge/arXiV-2604.07836-red)](https://arxiv.org/abs/2604.07836)
 [![GitHub issues](https://img.shields.io/github/issues/dyyuCS/LCMP)]()
 [![GitHub license](https://img.shields.io/github/license/dyyuCS/LCMP)]()
