@@ -1,5 +1,16 @@
 # LCMP: Distributed Long-Haul Cost-Aware Multi-Path Routing for Inter-Datacenter RDMA Networks
 
+<div align="center">
+
+[![Auth](https://img.shields.io/badge/Auth-DongYang_Yu-blue)](https://dyyuCS.github.io)
+[![Paper](https://img.shields.io/badge/arXiV-2604.07836-blue)](https://arxiv.org/abs/2604.07836)
+[![GitHub issues](https://img.shields.io/github/issues/dyyuCS/LCMP)]()
+[![GitHub license](https://img.shields.io/github/license/dyyuCS/LCMP)]()
+[![GitHub stars](https://img.shields.io/github/stars/dyyuCS/LCMP)]()
+[![GitHub forks](https://img.shields.io/github/forks/dyyuCS/LCMP)]()
+
+</div>
+
 This repository contains the code, scripts, and data for the paper:
 
 > **"LCMP: Distributed Long-Haul Cost-Aware Multi-Path Routing for Inter-Datacenter RDMA Networks"**  
